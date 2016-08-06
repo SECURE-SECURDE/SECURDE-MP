@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/SECURDE">
+
+<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" 
+            maxTotal="100" maxIdle="30" maxWaitMillis="100000" 
+            name="jdbc/securde" username = "securde_mp" password="SecurePassword"
+            type="javax.sql.DataSource" 
+            url="jdbc:mysql://localhost:3306/securde"/>
+
+</Context>

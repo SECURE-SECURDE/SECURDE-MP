@@ -1,0 +1,44 @@
+.product-list li{
+	width: 200px;
+	display: inline-block;
+	vertical-align: top;
+	display: inline;
+}
+
+.product-name {
+    
+}
+
+.product_price {
+    
+}
+
+.product-info {
+
+}
+
+.order-info {
+
+}
+
+.product-list-container {
+
+}
+
+.center {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.panel-default {
+	opacity: 0.9;
+	margin-top:30px;
+}
+
+#radioBtn .notActive{
+    color: #3276b1;
+    background-color: #fff;
+}
+
+.form-group.last { margin-bottom:0px; }
