@@ -23,17 +23,21 @@
 	<div w3-include-html="navbar.html"></div>
 	<script>w3IncludeHTML();</script>
 
-	<table class="checkout-items">
+	<table class="checkout-items table table-striped table-bordered table-list">
+            <thead>
 		<tr>
 			<th class="qty-col">Qty</th>
 			<th class="name-col">Item Name</th>
 			<th class="price-col">Price</th>
 		</tr>
+            </thead>
+            <tbody>
 		<tr>
 			<td><%=qty%></td>
 			<td><%=product.getProductName()%></td>
 			<td><%=price%></td>
 		</tr>
+            </tbody>
 	</table>
 	<h4>Total Price:</h4> <%=price%>
 	<form action="">
