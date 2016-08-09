@@ -63,8 +63,8 @@ public class RegisterServlet extends MySQLDbcpServlet {
 				addCookieToList(Account.ACCOUNT_ID, String.valueOf(accountID), expiry);
 				addCookiesToResponse(response);
                                 
-				response.sendRedirect("https://localhost:8443/SECURDE/HomePage.jsp");
-			} else response.sendRedirect("https://localhost:8443/SECURDE/Register.html");
+				response.sendRedirect("HomePage.jsp");
+			} else response.sendRedirect("Register.html");
 		} catch(SQLException ex) {
 			
 			ex.printStackTrace();

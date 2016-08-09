@@ -44,7 +44,7 @@
             <c:forEach var="row" items="${rs.rows}">
                 <li>
                     <div class="product-container col-md-1">
-                        <form id="product${row.product_id}" role="form" action="https://localhost:8443/SECURDE/product.jsp" method="post">
+                        <form id="product${row.product_id}" role="form" action="product.jsp" method="post">
                             <input type="hidden" name=<%=Product.PRODUCT_ID%> value="${row.product_id}"/>                            
                             <a href="#" onclick="document.getElementById('product${row.product_id}').submit();">
                                 <img class="product-img" src="${row.product_img}"/>
