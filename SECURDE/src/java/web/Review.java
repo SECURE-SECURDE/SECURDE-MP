@@ -18,13 +18,13 @@ public class Review {
     
     private int reviewId;
     private String review;
-    private Account account;
+    private int userId;
     private int productId;
     
     public static class ReviewBuilder {
         private int reviewId = 0;
         private String review;
-        private Account account;
+        private int userId;
         private int productId;
         
         public ReviewBuilder reviewId(int reviewId) {
@@ -37,8 +37,8 @@ public class Review {
             return this;
         }
         
-        public ReviewBuilder account(Account account) {
-            this.account = account;
+        public ReviewBuilder userId(int userId) {
+            this.userId = userId;
             return this;
         }
         
@@ -48,14 +48,14 @@ public class Review {
         }
         
         public Review build() {
-            return new Review(reviewId, review, account, productId);
+            return new Review(reviewId, review, userId, productId);
         }
     }
     
-    private Review(int reviewId, String review, Account account, int productId) {
+    private Review(int reviewId, String review, int userId, int productId) {
         this.reviewId = reviewId;
         this.review = review;
-        this.account = account;
+        this.userId = userId;
         this.productId = productId;
     }
 
@@ -67,8 +67,8 @@ public class Review {
         return review;
     }
 
-    public Account getAccount() {
-        return account;
+    public int getUserId() {
+        return userId;
     }
 
     public int getProductId() {

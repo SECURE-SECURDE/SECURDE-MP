@@ -6,6 +6,7 @@
 package web.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -50,14 +51,12 @@ public class ReviewModel {
             int productId = rs.getInt(Review.PRODUCT_ID);
             int accountId = rs.getInt(Review.USER_ID);
             String review = rs.getString(Review.REVIEW);
-            
-           Account reviewer = AccountModel.getInstance().getAccountByID(accountId);
            
            Review toAdd = new Review.ReviewBuilder()
                             .reviewId(reviewId)
                             .productId(productId)
                             .review(review)
-                            .account(reviewer)
+                            .userId(accountId)
                             .build();
            list.add(toAdd);
         }
@@ -73,6 +72,20 @@ public class ReviewModel {
         }
         
         return reviews;
+    }
+
+    public void addReview(Review rev) throws SQLException {
+        String sql = "INSERT INTO " + Review.TABLE_NAME + "(" +
+                    Review.USER_ID + ", " + Review.PRODUCT_ID + ", " +
+                    Review.REVIEW + ") VALUES (?, ?, ?);";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        
+        ps.setInt(1, rev.getUserId());
+        ps.setInt(2, rev.getProductId());
+        ps.setString(3, rev.getReview());
+        
+        ps.executeUpdate();
     }
     
 }

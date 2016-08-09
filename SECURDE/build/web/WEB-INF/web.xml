@@ -15,6 +15,10 @@
         <servlet-name>CheckOutServlet</servlet-name>
         <servlet-class>CheckOutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PostServlet</servlet-name>
+        <servlet-class>PostServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MySQLDbcpExample</servlet-name>
         <url-pattern>/trydbcp</url-pattern>
@@ -30,6 +34,10 @@
     <servlet-mapping>
         <servlet-name>CheckOutServlet</servlet-name>
         <url-pattern>/CheckOutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostServlet</servlet-name>
+        <url-pattern>/PostServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
