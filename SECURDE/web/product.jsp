@@ -48,6 +48,7 @@
             </div>
             <div class="panel-body">
                 <form class="form-horizontal" action="checkout.jsp" method="post">
+                    <input type="hidden" name="<%=Product.PRODUCT_ID%>" value="<%=productID%>"/>
                     <div class="form-group">
                         <label for="inputPrice" class="col-md-3 control-label">
                             Quantity:
