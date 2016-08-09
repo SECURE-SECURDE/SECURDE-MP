@@ -29,9 +29,9 @@
 <script>
     var updateTotal = function() {
             var price = <%=product.getPrice()%>;
-            var qty = document.getElementById('qty').value;
+            var qty = document.getElementById(<%=LineItem.QTY%>).value;
             var total = Math.round(price*qty*100)/100;
-            document.getElementById('totalPrice').innerHTML = '$' + total;
+            document.getElementById(<%=LineItem.TOTAL_PRICE%>).innerHTML = '$' + total;
             document.getElementById('price').value = total;
         };
 </script>
@@ -61,10 +61,10 @@
                         <label for="totalPrice" class="col-md-3 control-label">
                             Total: 
                         </label>
-                        <div class="col-md-9" id="totalPrice">
+                        <div class="col-md-9" id="<%=LineItem.TOTAL_PRICE%>">
                             $<%=product.getPrice()%>
                         </div>
-                        <input id="price" type="hidden" name="totalPrice" value="<%=product.getPrice()%>">
+                        <input id="price" type="hidden" name="<%=LineItem.TOTAL_PRICE%>" value="<%=product.getPrice()%>">
                     </div>
                     <div class="form-group last">
                         <div class="col-sm-offset-3 col-sm-9">

@@ -19,8 +19,8 @@
 
 <%
     int productID = Integer.parseInt((String)request.getParameter(Product.PRODUCT_ID));
-    int qty = Integer.parseInt((String)request.getParameter("qty"));
-    double price = Double.parseDouble((String)request.getParameter("totalPrice"));
+    int qty = Integer.parseInt((String)request.getParameter(LineItem.QTY));
+    double price = Double.parseDouble((String)request.getParameter(LineItem.TOTAL_PRICE));
     
     Product product = ProductModel.getInstance().getProductById(productID);
 %>
@@ -54,9 +54,9 @@
                 
     <div class="purchase-container col-md-6">
         <form action="CheckOutServlet" method="post">
-            <input type="hidden" name="price" value="<%=price%>"/>
-            <input type="hidden" name="<%=Product.PRODUCT_ID%>" value="<%=productID%>"/>
-            <input type="hidden" name="qty" value="<%=qty%>"/>
+            <input type="hidden" name="<%=LineItem.TOTAL_PRICE%>" value="<%=price%>"/>
+            <input type="hidden" name="<%=LineItem.PRODUCT_ID%>" value="<%=productID%>"/>
+            <input type="hidden" name="<%=LineItem.QTY%>" value="<%=qty%>"/>
             <div class="form-group">
                 <label class="control-label">Card Number</label>
                 <div class="controls">
