@@ -29,9 +29,9 @@
 <script>
     var updateTotal = function() {
             var price = <%=product.getPrice()%>;
-            var qty = document.getElementById(<%=LineItem.QTY%>).value;
+            var qty = document.getElementById('<%=LineItem.QTY%>').value;
             var total = Math.round(price*qty*100)/100;
-            document.getElementById(<%=LineItem.TOTAL_PRICE%>).innerHTML = '$' + total;
+            document.getElementById('<%=LineItem.TOTAL_PRICE%>').innerHTML = '$' + total;
             document.getElementById('price').value = total;
         };
 </script>

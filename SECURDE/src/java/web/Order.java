@@ -15,7 +15,7 @@ import java.util.List;
  * @author user
  */
 public class Order {
-    public final static String TABLE_NAME = "order";
+    public final static String TABLE_NAME = "orders";
     
     public final static String ORDER_ID = "order_id";
     public final static String USER_ID = "user_id";
@@ -55,6 +55,11 @@ public class Order {
             return this;
         }
         
+        public OrderBuilder orderItems(List orderItems) {
+            this.orderItems = orderItems;
+            return this;
+        }
+        
         public Order build() {
             return new Order(orderId, userId, orderDate, totalPrice, orderItems);
         }
@@ -86,5 +91,9 @@ public class Order {
     
     public void addLineItem(LineItem item) {
         this.orderItems.add(item);
+    }
+    
+    public List<LineItem> getLineItems() {
+        return this.orderItems;
     }
 }

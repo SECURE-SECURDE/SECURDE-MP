@@ -6,20 +6,22 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.Account;
+import web.LineItem;
+import web.Order;
+import web.model.OrderModel;
 
 /**
  *
- * @author Miko Garcia
+ * @author user
  */
-@WebServlet(urlPatterns = {"/LogOutServlet"})
-public class LogOutServlet extends MySQLDbcpServlet {
+public class CheckOutServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,9 +34,31 @@ public class LogOutServlet extends MySQLDbcpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getAccountCookie(request).setMaxAge(0);
-        
-        response.sendRedirect("login.html");
+        try {
+            int accountId = Integer.parseInt(getAccountCookie(request).getValue());
+            int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
+            int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
+            double totalPrice = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
+            
+            Order newOrder = new Order.OrderBuilder()
+                    .userId(accountId)
+                    .totalPrice(totalPrice)
+                    .build();
+            
+            LineItem item = new LineItem.LineItemBuilder()
+                    .productId(productId)
+                    .qty(qty)
+                    .totalPrice(totalPrice)
+                    .build();
+            
+            newOrder.addLineItem(item);
+            
+            OrderModel.getInstance().addOrder(newOrder);
+            
+            response.sendRedirect("HomePage.jsp");
+        } catch (SQLException ex) {
+            Logger.getLogger(CheckOutServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
