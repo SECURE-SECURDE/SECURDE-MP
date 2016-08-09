@@ -1,5 +1,5 @@
 .product-list li{
-	width: 200px;
+        width: 255px;
 	display: inline-block;
 	vertical-align: top;
 	display: inline;
@@ -42,3 +42,27 @@
 }
 
 .form-group.last { margin-bottom:0px; }
+
+.center {
+    margin-top:50px;   
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+    	padding: 0;
+	}
+    
+.modal-footer .btn-group button {
+	height:40px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+	
+.modal-footer .btn-group:last-child > button {
+	border-right: 0;
+}
