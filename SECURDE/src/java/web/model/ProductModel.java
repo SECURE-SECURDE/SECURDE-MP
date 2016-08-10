@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import web.LineItem;
+import web.Order;
 import web.Product;
 import web.WebConnection;
 
@@ -65,6 +67,8 @@ public class ProductModel {
             
             list.add(toAdd);
         }
+        
+        rs.close();
     }
     
     public Product getProductById(int productId) {
@@ -89,5 +93,27 @@ public class ProductModel {
         
         ps.executeUpdate();
         ps.close();
+    }
+        
+    public boolean boughtByUser(int productId, int userId) throws SQLException {
+        boolean bought = false;
+        
+        String sql = "SELECT * FROM " + LineItem.TABLE_NAME + " L, " + 
+                    Order.TABLE_NAME + " O WHERE O." + Order.ORDER_ID + " = L." + 
+                    LineItem.ORDER_ID + " AND O." + Order.USER_ID + " = ? AND L." +
+                    LineItem.PRODUCT_ID + " = ?;";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, userId);
+        ps.setInt(2, productId);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        bought = rs.isBeforeFirst();
+        
+        ps.close();
+        rs.close();
+        
+        return bought;
     }
 }

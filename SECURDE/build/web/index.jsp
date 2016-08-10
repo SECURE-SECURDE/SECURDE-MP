@@ -16,6 +16,6 @@
     </head>
     
     <body>
-        <% response.sendRedirect("https://localhost:8443/SECURDE/login.html"); %>
+        <% response.sendRedirect("login.html"); %>
     </body>
 </html>
