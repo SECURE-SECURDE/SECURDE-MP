@@ -64,7 +64,7 @@ public class RegisterServlet extends MySQLDbcpServlet {
                         addCookiesToResponse(response);
 
                         response.sendRedirect("HomePage.jsp");
-                    } else response.sendRedirect("Register.html");
+                    } else response.sendRedirect("register.html");
 		} catch(SQLException ex) {
 			ex.printStackTrace();
 		} 

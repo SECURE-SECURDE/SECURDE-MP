@@ -48,6 +48,7 @@ public class LogInServlet extends MySQLDbcpServlet {
                 } else {
                     response.sendRedirect("HomePage.jsp");
                 }
+            } else {
             }
             
             } catch (SQLException ex) {
