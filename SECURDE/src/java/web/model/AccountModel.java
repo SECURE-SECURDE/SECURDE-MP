@@ -117,6 +117,16 @@ public final class AccountModel {
             
             return false;
     }
+        
+        public boolean isAdmin(int accountId) throws SQLException {
+            String sql = "SELECT * FROM " + Account.ADMIN_TABLE_NAME + " WHERE " +
+                    Account.ACCOUNT_ID + " = ?;";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, accountId);
+            
+            return ps.executeQuery().isBeforeFirst();
+        }
 }
 
 

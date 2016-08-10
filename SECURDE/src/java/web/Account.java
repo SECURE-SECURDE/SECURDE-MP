@@ -13,6 +13,8 @@ package web;
 public class Account {
     
     public final static String TABLE_NAME =     "accounts";
+    public final static String ADMIN_TABLE_NAME = "admin_accounts";
+    
     public final static String ACCOUNT_ID =     "account_id";
     public final static String USERNAME =       "username";
     public final static String EMAIL =          "email";

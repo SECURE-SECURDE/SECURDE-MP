@@ -43,7 +43,11 @@ public class LogInServlet extends MySQLDbcpServlet {
                 this.addCookieToList(Account.ACCOUNT_ID, String.valueOf(account.getID()), expiry);
                 this.addCookiesToResponse(response);
                 
-                response.sendRedirect("HomePage.jsp");
+                if(AccountModel.getInstance().isAdmin(account.getID())) {
+                    response.sendRedirect("AdminPage.jsp");
+                } else {
+                    response.sendRedirect("HomePage.jsp");
+                }
             }
             
             } catch (SQLException ex) {
