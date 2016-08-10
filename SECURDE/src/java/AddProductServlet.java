@@ -45,6 +45,7 @@ public class AddProductServlet extends HttpServlet {
         
         try {
             ProductModel.getInstance().addProduct(product);
+            response.sendRedirect("AdminPage.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
             response.sendError(1, "Invalid product details");

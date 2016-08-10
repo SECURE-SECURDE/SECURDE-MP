@@ -1,20 +1,39 @@
 .product-list li{
-        width: 255px;
 	display: inline-block;
 	vertical-align: top;
-	display: inline;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+.caption {
+    overflow: hidden;
+}
+
+.caption h4 {
+    white-space: nowrap;
 }
 
 .product-name {
-    
+    display: inline;
 }
 
 .product_price {
-    
+    display: inline;
 }
 
 .product-info {
-
+    display: inline;
 }
 
 .order-info {

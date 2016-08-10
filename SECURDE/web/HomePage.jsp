@@ -40,23 +40,25 @@
         <sql:query var="rs" dataSource="${ds}">
             SELECT * FROM <%=Product.TABLE_NAME%>;
         </sql:query>
-        <ul class="product-list">
-            <c:forEach var="row" items="${rs.rows}">
-                <li>
-                    <div class="product-container col-md-1">
-                        <form id="product${row.product_id}" role="form" action="product.jsp" method="post">
-                            <input type="hidden" name=<%=Product.PRODUCT_ID%> value="${row.product_id}"/>                            
-                            <a href="#" onclick="document.getElementById('product${row.product_id}').submit();">
-                                <img class="product-img" src="${row.product_img}"/>
-                                <h4 class="product-name"> ${row.product_name} </h4>
-                                <p class="product-price"> $ ${row.price} </p>
-                            </a>
-                        </form>
-                    </div>
-                </li>
-            </c:forEach>
-        </ul>
-                   
+        <c:forEach var="row" items="${rs.rows}">
+            <div class="col-md-2 col-sm-2 col-lg-2">
+                <div class="thumbnail">
+                    <form id="product${row.product_id}" role="form" action="product.jsp" method="post">
+                        <input type="hidden" name=<%=Product.PRODUCT_ID%> value="${row.product_id}"/>      
+                        <div class="caption">
+                            <img class="product-img" src="${row.product_img}"/>
+                            <h4 class="product-price pull-right"> $ ${row.price} </h4>
+                            <h4>
+                                <a href="#" onclick="document.getElementById('product${row.product_id}').submit();">
+                                    ${row.product_name}
+                                </a>
+                            </h4>
+                            <p>${row.product_description}</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </c:forEach>     
     </div>
 </body>
 
