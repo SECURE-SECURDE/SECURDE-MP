@@ -47,34 +47,26 @@ public class RegisterServlet extends MySQLDbcpServlet {
 		middleInitial = middleInitial.toUpperCase();
 		
 		try {
-			if(password.equals(confPwd)) {
-                                Account toAdd = new Account.AccountBuilder()
-                                                    .username(username)
-                                                    .email(email)
-                                                    .password(password)
-                                                    .firstName(firstName)
-                                                    .lastName(lastName)
-                                                    .middleInitial(middleInitial)
-                                                    .build();
-				AccountModel.getInstance().addAccount(toAdd);
-				
-				int accountID = AccountModel.getInstance().getAccountByUsernameOrEmail(toAdd.getUsername()).getID();
+                    if(password.equals(confPwd)) {
+                        Account toAdd = new Account.AccountBuilder()
+                                            .username(username)
+                                            .email(email)
+                                            .password(password)
+                                            .firstName(firstName)
+                                            .lastName(lastName)
+                                            .middleInitial(middleInitial)
+                                            .build();
+                        AccountModel.getInstance().addAccount(toAdd);
 
-				addCookieToList(Account.ACCOUNT_ID, String.valueOf(accountID), expiry);
-				addCookiesToResponse(response);
-                                
-				response.sendRedirect("HomePage.jsp");
-			} else response.sendRedirect("Register.html");
+                        int accountID = AccountModel.getInstance().getAccountByUsernameOrEmail(toAdd.getUsername()).getID();
+
+                        addCookieToList(Account.ACCOUNT_ID, String.valueOf(accountID), expiry);
+                        addCookiesToResponse(response);
+
+                        response.sendRedirect("HomePage.jsp");
+                    } else response.sendRedirect("Register.html");
 		} catch(SQLException ex) {
-			
 			ex.printStackTrace();
-		} finally {
-			try{
-				if(con != null)
-					con.close();
-			} catch(SQLException ex) {
-
-			}
-		}
+		} 
 	}
 }

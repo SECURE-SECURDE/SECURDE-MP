@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
+import org.mindrot.jbcrypt.BCrypt;
+import sun.rmi.runtime.Log;
 import web.Account;
 import web.WebConnection;
 
@@ -35,28 +38,28 @@ public final class AccountModel {
 		String sql = "SELECT * FROM " + Account.TABLE_NAME;
 		ResultSet rs = con.prepareStatement(sql).executeQuery();
 		
-		for(rs.first(); !rs.isLast(); rs.next()) {
-			Account toAdd;
-			
-                        int accountID = rs.getInt(Account.ACCOUNT_ID);
-			String userName = rs.getString(Account.USERNAME);
-			String password = rs.getString(Account.PASSWORD);
-			String firstName = rs.getString(Account.FIRSTNAME);
-			String lastName = rs.getString(Account.LASTNAME);
-			String middleInitial = rs.getString(Account.MIDDLEINITIAL);
-			String email = rs.getString(Account.EMAIL);
-			
-                        toAdd = new Account.AccountBuilder()
-                                    .accountId(accountID)
-                                    .username(userName)
-                                    .email(email)
-                                    .password(password)
-                                    .firstName(firstName)
-                                    .lastName(lastName)
-                                    .middleInitial(middleInitial)
-                                    .build();
-			list.add(toAdd);
-		}
+		while(rs.next()) {
+                    Account toAdd;
+
+                    int accountID = rs.getInt(Account.ACCOUNT_ID);
+                    String userName = rs.getString(Account.USERNAME);
+                    String password = rs.getString(Account.PASSWORD);
+                    String firstName = rs.getString(Account.FIRSTNAME);
+                    String lastName = rs.getString(Account.LASTNAME);
+                    String middleInitial = rs.getString(Account.MIDDLEINITIAL);
+                    String email = rs.getString(Account.EMAIL);
+
+                    toAdd = new Account.AccountBuilder()
+                                .accountId(accountID)
+                                .username(userName)
+                                .email(email)
+                                .password(password)
+                                .firstName(firstName)
+                                .lastName(lastName)
+                                .middleInitial(middleInitial)
+                                .build();
+                    list.add(toAdd);
+            }
 	}
 	
 	public Iterator<?> getModelList() {
@@ -78,8 +81,10 @@ public final class AccountModel {
                                 ", " + Account.MIDDLEINITIAL + ", " + Account.EMAIL +
 				") VALUES(?, ?, ?, ?, ?, ?)");
 
+                String hashedPass = BCrypt.hashpw(toAdd.getPassword(), BCrypt.gensalt());
+                
 		ps.setString(1, toAdd.getUsername());
-		ps.setString(2, toAdd.getPassword());
+		ps.setString(2, hashedPass);
 		ps.setString(3, toAdd.getFirstName());
 		ps.setString(4, toAdd.getLastName());
 		ps.setString(5, toAdd.getMiddleInitial());
@@ -110,7 +115,7 @@ public final class AccountModel {
             
             while(rs.next()) {
                 String rsPassword = rs.getString(Account.PASSWORD);
-                if(rsPassword.equals(password)) {
+                if(BCrypt.checkpw(password, rsPassword)) {
                     return true;
                 }
             }
