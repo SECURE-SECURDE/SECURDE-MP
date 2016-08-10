@@ -19,6 +19,10 @@
         <servlet-name>PostServlet</servlet-name>
         <servlet-class>PostServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddProductServlet</servlet-name>
+        <servlet-class>AddProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MySQLDbcpExample</servlet-name>
         <url-pattern>/trydbcp</url-pattern>
@@ -38,6 +42,10 @@
     <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/PostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductServlet</servlet-name>
+        <url-pattern>/AddProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

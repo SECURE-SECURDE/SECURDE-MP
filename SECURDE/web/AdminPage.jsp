@@ -21,12 +21,42 @@
 </head>
 
 <body>
-    <form action="AddProductServlet" method="post">
-        <input type="text" name="<%=Product.PRODUCT_NAME%>" required=""/>
-        <textarea name="<%=Product.PRODUCT_DESCRIPTION%>" placeholder="Product Description here..."/>
-        <input type="number" name="<%=Product.PRODUCT_PRICE%>" value="0.00" min="0.00" step="0.01" required=""/>
-        <button type="submit" class="btn btn-success">Add Product</button>
-    </form>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Add Product
+        </div>
+        <form action="AddProductServlet" method="post">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="<%=Product.PRODUCT_NAME%>" class="col-md-3 control-label">
+                        Product Name:
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text" name="<%=Product.PRODUCT_NAME%>" required=""/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="<%=Product.PRODUCT_DESCRIPTION%>" class="col-md-3 control-label">
+                        Description:
+                    </label>
+                    <div class="col-md-9">
+                        <textarea class="form-control counted" name="<%=Product.PRODUCT_DESCRIPTION%>" placeholder="Product Description here..."></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="<%=Product.PRODUCT_PRICE%>" class="col-md-3 control-label">
+                        Standard Price:
+                    </label>
+                    <div class="col-md-9"> 
+                        <input type="number" name="<%=Product.PRODUCT_PRICE%>" value="0.00" min="0.00" step="0.01" required=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-success">Add Product</button>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

@@ -103,15 +103,15 @@
                 <form class="form-horizontal" action="checkout.jsp" method="post">
                     <input type="hidden" name="<%=Product.PRODUCT_ID%>" value="<%=productID%>"/>
                     <div class="form-group">
-                        <label for="inputPrice" class="col-md-3 control-label">
+                        <label for="<%=LineItem.QTY%>" class="col-md-3 control-label">
                             Quantity:
                         </label>
                         <div class="col-md-9">
-                            <input id="qty" type="number" name="qty" min="1" value="1" onchange="updateTotal();"/>
+                            <input id="<%=LineItem.QTY%>" type="number" name="<%=LineItem.QTY%>" min="1" value="1" onchange="updateTotal();"/>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="totalPrice" class="col-md-3 control-label">
+                        <label for="<%=LineItem.TOTAL_PRICE%>" class="col-md-3 control-label">
                             Total: 
                         </label>
                         <div class="col-md-9" id="<%=LineItem.TOTAL_PRICE%>">
