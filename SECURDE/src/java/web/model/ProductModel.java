@@ -6,6 +6,7 @@
 package web.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -74,5 +75,19 @@ public class ProductModel {
         }
         
         return null;
+    }
+    
+    public void addProduct(Product product) throws SQLException {
+        String sql = "INSERT INTO " + Product.TABLE_NAME + " (" +
+                    Product.PRODUCT_NAME + ", " + Product.PRODUCT_PRICE + ", " +
+                    Product.PRODUCT_DESCRIPTION + ") VALUES (?, ?, ?);";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, product.getProductName());
+        ps.setDouble(2, product.getPrice());
+        ps.setString(3, product.getDescription());
+        
+        ps.executeUpdate();
+        ps.close();
     }
 }
