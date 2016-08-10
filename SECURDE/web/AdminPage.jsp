@@ -22,6 +22,10 @@
 
 <body>
     <form action="AddProductServlet" method="post">
+        <input type="text" name="<%=Product.PRODUCT_NAME%>" required=""/>
+        <textarea name="<%=Product.PRODUCT_DESCRIPTION%>" placeholder="Product Description here..."/>
+        <input type="number" name="<%=Product.PRODUCT_PRICE%>" value="0.00" min="0.00" step="0.01" required=""/>
+        <button type="submit" class="btn btn-success">Add Product</button>
     </form>
 </body>
 
