@@ -4,21 +4,23 @@
  * and open the template in the editor.
  */
 
-import web.Account;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.model.AccountModel;
+import web.Product;
+import web.model.ProductModel;
 
 /**
  *
- * @author Miko Garcia
+ * @author user
  */
-public class LogInServlet extends MySQLDbcpServlet {
+public class AddProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,28 +33,22 @@ public class LogInServlet extends MySQLDbcpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
-        String user = request.getParameter("user");
-        String pwd = request.getParameter("pwd");
-
-        try {            
-            
-            if(AccountModel.getInstance().validateAccount(user, pwd)) {
-                Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
-                
-                this.addCookieToList(Account.ACCOUNT_ID, String.valueOf(account.getID()), expiry);
-                this.addCookiesToResponse(response);
-                
-                if(AccountModel.getInstance().isAdmin(account.getID())) {
-                    response.sendRedirect("AdminPage.jsp");
-                } else {
-                    response.sendRedirect("HomePage.jsp");
-                }
-            }
-            
-            } catch (SQLException ex) {
-            Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(100, "Invalid Credentials: " + user + " " + pwd);
+        String productName = request.getParameter(Product.PRODUCT_NAME);
+        String productDescription = request.getParameter(Product.PRODUCT_DESCRIPTION);
+        double productPrice = Double.parseDouble(request.getParameter(Product.PRODUCT_PRICE));
+        
+        Product product = new Product.ProductBuilder()
+                                .productName(productName)
+                                .description(productDescription)
+                                .price(productPrice)
+                                .build();
+        
+        try {
+            ProductModel.getInstance().addProduct(product);
+            response.sendRedirect("AdminPage.jsp");
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendError(1, "Invalid product details");
         }
     }
 
@@ -82,7 +78,6 @@ public class LogInServlet extends MySQLDbcpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        super.doPost(request, response);
         processRequest(request, response);
     }
 
