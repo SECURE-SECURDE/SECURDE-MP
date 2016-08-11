@@ -20,16 +20,23 @@
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
 </head>
 
-<!--<script>
-    $(function() {
-        $(".product").on("click", function(e) {
-            e.preventDefault();
-            $.post(this.href, function(data) {
-                $("#someContainer").html(data);
-            });
-        });
-    });
-</script>-->
+<%
+    try {
+        int accountID = 0;
+        
+        for(Cookie cookie:request.getCookies()) {
+            if(cookie.getName().equals(Account.ACCOUNT_ID)) {
+                accountID = Integer.parseInt(cookie.getValue());
+            }
+        }
+        
+        if(accountID == 0) {
+            response.sendRedirect("login.html");
+        }
+    } catch(NullPointerException noCookies) {
+        response.sendRedirect("login.html");
+    } 
+%>
 
 <body>
     <div w3-include-html="navbar.html"></div>

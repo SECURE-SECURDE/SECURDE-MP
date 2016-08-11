@@ -44,7 +44,7 @@ public class MySQLDbcpServlet extends HttpServlet {
 
     public void addCookiesToResponse (HttpServletResponse response) {
          for(Cookie cookie: cookies) {
-                 response.addCookie(cookie);
+                response.addCookie(cookie);
          }
     }
 
@@ -67,6 +67,14 @@ public class MySQLDbcpServlet extends HttpServlet {
         }
         
         return null;
+    }
+    
+    protected void clearCookies() {
+        cookies.stream().forEach((cookie) -> {
+            cookie.setMaxAge(0);
+        });
+        
+        cookies.removeAll(cookies);
     }
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response) 
