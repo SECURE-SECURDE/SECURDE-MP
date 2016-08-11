@@ -40,6 +40,7 @@ public class LogInServlet extends MySQLDbcpServlet {
             if(AccountModel.getInstance().validateAccount(user, pwd)) {
                 Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
                 
+                clearCookies();
                 this.addCookieToList(Account.ACCOUNT_ID, String.valueOf(account.getID()), expiry);
                 this.addCookiesToResponse(response);
                 
@@ -49,6 +50,7 @@ public class LogInServlet extends MySQLDbcpServlet {
                     response.sendRedirect("HomePage.jsp");
                 }
             } else {
+//                response.sendRedirect("login.html");
             }
             
             } catch (SQLException ex) {
