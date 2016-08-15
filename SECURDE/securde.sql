@@ -32,9 +32,10 @@ CREATE TABLE `accounts` (
   `f_name` varchar(45) NOT NULL,
   `l_name` varchar(45) NOT NULL,
   `m_initial` varchar(5) DEFAULT NULL,
+  `login_attempts` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_id_UNIQUE` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +44,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (8,'CryMehOnions','crymehonions@gmail.com','$2a$10$EPBlxOudE1jteKjnLm7DMude6hJij0P/sdVqqUs1C/nBcBcqMu0Tm','miko','garcia','C');
+INSERT INTO `accounts` VALUES (8,'CryMehOnions','crymehonions@gmail.com','$2a$10$EPBlxOudE1jteKjnLm7DMude6hJij0P/sdVqqUs1C/nBcBcqMu0Tm','miko','garcia','C',4),(9,'Miko Garcia','markus.mikogarcia@gmail.com','$2a$10$J9HjYh0q5v.BDIVvuEJbFOYLiLlsPV.VpX0T7K8t0AA2IfdaV0QIa','miko','garcia','C',0);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +92,7 @@ CREATE TABLE `line_items` (
   KEY `line_product_id_idx` (`product_id`),
   CONSTRAINT `line_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `line_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,6 +101,7 @@ CREATE TABLE `line_items` (
 
 LOCK TABLES `line_items` WRITE;
 /*!40000 ALTER TABLE `line_items` DISABLE KEYS */;
+INSERT INTO `line_items` VALUES (1,1,4,2,246.9),(2,1,3,3,299.97);
 /*!40000 ALTER TABLE `line_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +147,7 @@ CREATE TABLE `orders` (
   UNIQUE KEY `order_id_UNIQUE` (`order_id`),
   KEY `order_user_id_idx` (`user_id`),
   CONSTRAINT `order_user_id` FOREIGN KEY (`user_id`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,6 +156,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,9,'2016-08-16 05:53:57',546.87);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +176,7 @@ CREATE TABLE `products` (
   `product_img` varchar(100) DEFAULT 'images/no-img.jpg',
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `product_id_UNIQUE` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +185,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (2,'Amazing Sandals','Sandals that will amaze you no matter what',49.99,0,'images/no-img.jpg'),(3,'Shoe-No-More','Shoes that make all your problems go away. (no guarantee)',99.99,0,'images/no-img.jpg'),(4,'Nike Shoes','Some nike stuff here',123.45,0,'images/no-img.jpg');
+INSERT INTO `products` VALUES (2,'Amazing Sandals','Sandals that will amaze you no matter what',49.99,0,'images/no-img.jpg'),(3,'Shoe-No-More','Shoes that make all your problems go away. (no guarantee)',99.99,0,'images/no-img.jpg'),(4,'Nike Shoes','Some nike stuff here',123.45,0,'images/no-img.jpg'),(5,'Nintendo Vans High-Cut','Vans celebrate their along with nintendo with some new shoes',49.99,0,'images/no-img.jpg'),(6,'Old Boat Shoes','Belonging to some old sailor',10,0,'images/no-img.jpg');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +208,7 @@ CREATE TABLE `reviews` (
   KEY `review_user_id_idx` (`user_id`),
   CONSTRAINT `review_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `review_user_id` FOREIGN KEY (`user_id`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,4 +229,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-11  3:35:45
+-- Dump completed on 2016-08-16  6:19:50
