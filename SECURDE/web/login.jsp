@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.io.*,java.util.*,java.sql.*, web.*, web.model.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 
 <head>
@@ -10,28 +16,15 @@
     <script type="text/javascript" src="javascript/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
     
-    <script>
-        function validate() {
-           var ok = false;
-           $.ajax({
-               url:     "LogInServlet",
-               data:    {
-                            user:    $("#inputEmail3").val(),
-                            pwd:     $("#inputPassword3").val()
-                        },
-               type:    "post",
-               cache:   false,
-               success: ok = true,
-               error:   function() {
-                            $("#inputEmail3").parent().parent().addClass("has-error");
-                            $("#inputPassword3").parent().parent().addClass("has-error");
-                            $("#inputPassword3").parent().append("<span class='help-inline'>No Email or Password mismatch</span>");
-                        }
-           });
-           
-           return ok;
+    <%  
+        boolean login_error = false;
+        try {
+           login_error = (boolean)request.getSession().getAttribute("login_error");
+        } catch(NullPointerException ex) {
+            login_error = false;
         }
-    </script>
+    %>
+    
 </head>
 
 <body>
@@ -43,7 +36,7 @@
                     Log In
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" action="LogInServlet" method="post" onsubmit="return validate()">
+                    <form class="form-horizontal" role="form" action="LogInServlet" method="post">
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">
                             Username
@@ -58,6 +51,9 @@
                         </label>
                         <div class="col-sm-9">
                             <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="pwd" required>
+                            <%if(login_error) {%>
+                                <span class='help-inline'>No Email or Password mismatch</span>
+                            <%}%>
                         </div>
                     </div>
                     

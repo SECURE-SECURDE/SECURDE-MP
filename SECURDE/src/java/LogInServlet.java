@@ -40,8 +40,11 @@ public class LogInServlet extends MySQLDbcpServlet {
             if(AccountModel.getInstance().validateAccount(user, pwd)) {
                 Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
                 
-                clearCookies();
-                this.addCookieToList(Account.ACCOUNT_ID, String.valueOf(account.getID()), expiry);
+                this.invalidateSession(request);
+                this.addToSession(request, Account.TABLE_NAME, account);
+                this.addToSession(request, "login_error", true);
+                
+                this.clearCookies();
                 this.addCookiesToResponse(response);
                 
                 if(AccountModel.getInstance().isAdmin(account.getID())) {
@@ -49,8 +52,11 @@ public class LogInServlet extends MySQLDbcpServlet {
                 } else {
                     response.sendRedirect("HomePage.jsp");
                 }
+               
             } else {
 //                response.sendRedirect("login.html");
+                  response.sendRedirect("login.jsp");
+                  this.addToSession(request, "login_error", true);
             }
             
             } catch (SQLException ex) {
