@@ -136,21 +136,25 @@ public final class AccountModel {
         }
 
     public int addLoginAttempt(String username) throws SQLException {
-        Account account = this.getAccountByUsernameOrEmail(username);
-        
-        account.addLoginAttempt();
-        
-        String sql = "UPDATE " + Account.TABLE_NAME + " SET " + 
-                    Account.LOG_IN_ATTEMPT + " = ? WHERE " + Account.ACCOUNT_ID +
-                    " = ?;";
-        
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, account.getLoginAttempts());
-        ps.setInt(2, account.getID());
-        
-        ps.executeUpdate();
-        
-        return account.getLoginAttempts();
+        try {
+            Account account = this.getAccountByUsernameOrEmail(username);
+
+            account.addLoginAttempt();
+
+            String sql = "UPDATE " + Account.TABLE_NAME + " SET " + 
+                        Account.LOG_IN_ATTEMPT + " = ? WHERE " + Account.ACCOUNT_ID +
+                        " = ?;";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, account.getLoginAttempts());
+            ps.setInt(2, account.getID());
+
+            ps.executeUpdate();
+
+            return account.getLoginAttempts();
+        } catch(NullPointerException ex) {
+            return 0;
+        }
     }
 }
 

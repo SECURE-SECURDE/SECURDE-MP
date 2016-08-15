@@ -44,7 +44,7 @@ public class AddToCartServlet extends HttpServlet {
         
         cart.addItem(item);
         
-        response.sendRedirect("checkout.jsp");
+        response.sendRedirect("HomePage.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

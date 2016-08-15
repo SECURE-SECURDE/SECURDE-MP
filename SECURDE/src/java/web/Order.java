@@ -91,6 +91,7 @@ public class Order {
     
     public void addLineItem(LineItem item) {
         this.orderItems.add(item);
+        this.totalPrice += item.getTotalPrice();
     }
     
     public List<LineItem> getLineItems() {

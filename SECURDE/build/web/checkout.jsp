@@ -17,12 +17,9 @@
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
 </head>
 
-<%
-    int productID = Integer.parseInt((String)request.getParameter(LineItem.PRODUCT_ID));
-    int qty = Integer.parseInt((String)request.getParameter(LineItem.QTY));
-    double price = Double.parseDouble((String)request.getParameter(LineItem.TOTAL_PRICE));
-    
-    Product product = ProductModel.getInstance().getProductById(productID);
+<% 
+    Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+    List<LineItem> items = cart.getItems();
 %>
 <body>
     <div w3-include-html="navbar.html"></div>
@@ -38,15 +35,22 @@
                 </tr>
             </thead>
             <tbody>
+                <%
+                    for(LineItem item: items) {
+                        Product product = ProductModel.getInstance().getProductById(item.getProductId());
+                %>
                 <tr>
-                    <td><c:out value="<%=qty%>"/></td>
-                    <td><c:out value="<%=product.getProductName()%>"/></td>
-                    <td><c:out value="$<%=price%>"/></td>
+                    <td><%=item.getQty()%></td>
+                    <td><%=product.getProductName()%></td>
+                    <td>$<%=item.getTotalPrice()%></td>
                 </tr>
+                <%
+                    }
+                %>
                 <tr>
                     <td></td>
                     <td align="right"><b>Total Price</b></td>
-                    <td><c:out value ="$<%=price%>"/></td>
+                    <td>$<%=cart.getTotalPrice()%></td>
                 </tr>
             </tbody>
         </table>
@@ -54,9 +58,7 @@
                 
     <div class="purchase-container col-md-6">
         <form action="CheckOutServlet" method="post">
-            <input type="hidden" name="<%=LineItem.TOTAL_PRICE%>" value="<%=price%>"/>
-            <input type="hidden" name="<%=LineItem.PRODUCT_ID%>" value="<%=productID%>"/>
-            <input type="hidden" name="<%=LineItem.QTY%>" value="<%=qty%>"/>
+
             <div class="form-group">
                 <label class="control-label">Card Number</label>
                 <div class="controls">

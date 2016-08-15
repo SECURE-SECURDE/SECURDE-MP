@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import web.Cart;
 import web.model.AccountModel;
 
 /**
@@ -44,7 +45,8 @@ public class LogInServlet extends MySQLDbcpServlet {
                 this.clearCookies();
                 
                 this.addToSession(request, Account.TABLE_NAME, account);
-                this.addToSession(request, "login_error", true);
+                this.addToSession(request, "login_error", false);
+                this.addToSession(request, Cart.ATTRIBUTE_NAME, new Cart());
                 
                 if(AccountModel.getInstance().isAdmin(account.getID())) {
                     response.sendRedirect("AdminPage.jsp");
@@ -54,14 +56,14 @@ public class LogInServlet extends MySQLDbcpServlet {
                
             } else {
                 if(AccountModel.getInstance().addLoginAttempt(user) < Account.MAX_LOGIN_ATTEMPT) {
-                    response.sendRedirect("login.jsp");
                     this.addToSession(request, "login_error", true);
+                    
+                    response.sendRedirect("login.jsp");
                 }
             }
             
             } catch (SQLException ex) {
             Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(100, "Invalid Credentials: " + user + " " + pwd);
         }
     }
 

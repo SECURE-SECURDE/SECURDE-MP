@@ -22,6 +22,7 @@
 
 <% 
     int productID = 0;
+    
     Account account = null;
     Product product = null;
     boolean bought = false;
@@ -92,7 +93,7 @@
                 <p><%=product.getDescription()%></p>
             </div>
             <div class="panel-body">
-                <form class="form-horizontal" action="checkout.jsp" method="post">
+                <form class="form-horizontal" action="AddToCartServlet" method="post">
                     <input type="hidden" name="<%=LineItem.PRODUCT_ID%>" value="<%=productID%>"/>
                     <div class="form-group">
                         <label for="<%=LineItem.QTY%>" class="col-md-3 control-label">

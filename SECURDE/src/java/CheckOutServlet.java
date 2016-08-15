@@ -7,12 +7,15 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import web.Account;
+import web.Cart;
 import web.LineItem;
 import web.Order;
 import web.model.OrderModel;
@@ -35,23 +38,17 @@ public class CheckOutServlet extends MySQLDbcpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int accountId = Integer.parseInt(getAccountCookie(request).getValue());
-            int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
-            int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
-            double totalPrice = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
+            Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
+            Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+            List<LineItem> items = cart.getItems();
             
             Order newOrder = new Order.OrderBuilder()
-                    .userId(accountId)
-                    .totalPrice(totalPrice)
+                    .userId(account.getID())
                     .build();
             
-            LineItem item = new LineItem.LineItemBuilder()
-                    .productId(productId)
-                    .qty(qty)
-                    .totalPrice(totalPrice)
-                    .build();
-            
-            newOrder.addLineItem(item);
+            for(LineItem item: items) {
+                newOrder.addLineItem(item);
+            }
             
             OrderModel.getInstance().addOrder(newOrder);
             

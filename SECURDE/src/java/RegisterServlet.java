@@ -58,10 +58,9 @@ public class RegisterServlet extends MySQLDbcpServlet {
                                             .build();
                         AccountModel.getInstance().addAccount(toAdd);
 
-                        int accountID = AccountModel.getInstance().getAccountByUsernameOrEmail(toAdd.getUsername()).getID();
+                        Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(toAdd.getUsername());
 
-                        addCookieToList(Account.ACCOUNT_ID, String.valueOf(accountID), expiry);
-                        addCookiesToResponse(response);
+                        this.addToSession(request, Account.TABLE_NAME, account);
 
                         response.sendRedirect("HomePage.jsp");
                     } else response.sendRedirect("register.html");
