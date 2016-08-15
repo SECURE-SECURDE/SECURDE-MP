@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import web.Account;
 
 import web.WebConnection;
 
@@ -49,24 +48,14 @@ public class MySQLDbcpServlet extends HttpServlet {
     }
 
     public void addToSession(HttpServletRequest request, String attributeName, Object attribute) {
-         if(session == null)
+         if(session == null) {
                  session = request.getSession();
+         }
          session.setAttribute(attributeName, attribute);
     }
 
     public void invalidateSession(HttpServletRequest request) {
          request.getSession().invalidate();
-    }
-    
-    protected Cookie getAccountCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        
-        for(Cookie cookie: cookies) {
-            if(cookie.getName().equals(Account.ACCOUNT_ID)) 
-                return cookie;
-        }
-        
-        return null;
     }
     
     protected void clearCookies() {
