@@ -33,10 +33,11 @@ public class LogOutServlet extends MySQLDbcpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            getAccountCookie(request).setMaxAge(0);
+            this.invalidateSession(request);
+            this.clearCookies();
         } catch(NullPointerException noCookie) {}
         
-        response.sendRedirect("login.html");
+        response.sendRedirect("login.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
