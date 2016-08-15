@@ -7,4 +7,6 @@
             type="javax.sql.DataSource" 
             url="jdbc:mysql://localhost:3306/securde"/>
 
+<Manager sessionIdLength="32"/>
+
 </Context>
