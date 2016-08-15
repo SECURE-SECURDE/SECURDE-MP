@@ -22,6 +22,8 @@
 
 <%
     Account account = null;
+    String sessionID = request.getSession().getId();
+    
     try {
         account = (Account)request.getSession().getAttribute(Account.TABLE_NAME);
     } catch(NullPointerException noCookies) {
@@ -42,6 +44,7 @@
             <div class="col-md-2 col-sm-2 col-lg-2">
                 <div class="thumbnail">
                     <form id="product${row.product_id}" role="form" action="product.jsp" method="post">
+                        <input type="hidden" name="SESSION_ID" value="<%=sessionID%>">
                         <input type="hidden" name=<%=Product.PRODUCT_ID%> value="${row.product_id}"/>      
                         <div class="caption">
                             <img class="product-img" src="${row.product_img}"/>

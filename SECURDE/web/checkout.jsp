@@ -18,6 +18,18 @@
 </head>
 
 <% 
+    String sessionID = "";
+    
+    try {
+        sessionID = request.getParameter("SESSION_ID");
+        
+        if(!sessionID.equals(request.getSession().getId())) {
+            response.sendRedirect("CSRF.html");
+        }
+    } catch(NullPointerException ex) {
+        response.sendRedirect("CSRF.html");
+    }
+    
     Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
     List<LineItem> items = cart.getItems();
 %>
@@ -58,7 +70,7 @@
                 
     <div class="purchase-container col-md-6">
         <form action="CheckOutServlet" method="post">
-
+            <input type="hidden" name="SESSION_ID" value="<%=sessionID%>"/>
             <div class="form-group">
                 <label class="control-label">Card Number</label>
                 <div class="controls">

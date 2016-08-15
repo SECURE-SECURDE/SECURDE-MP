@@ -36,21 +36,25 @@ public class CheckOutServlet extends MySQLDbcpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
-            Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
-            List<LineItem> items = cart.getItems();
-            
-            Order newOrder = new Order.OrderBuilder()
-                    .userId(account.getID())
-                    .build();
-            
-            for(LineItem item: items) {
-                newOrder.addLineItem(item);
+            if(this.validateSessionId(request, request.getParameter("SESSION_ID"))) {
+                Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
+                Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+                List<LineItem> items = cart.getItems();
+
+                Order newOrder = new Order.OrderBuilder()
+                        .userId(account.getID())
+                        .build();
+
+                for(LineItem item: items) {
+                    newOrder.addLineItem(item);
+                }
+
+                OrderModel.getInstance().addOrder(newOrder);
+
+                response.sendRedirect("HomePage.jsp");
+            } else {
+                response.sendRedirect("CSRF.html");
             }
-            
-            OrderModel.getInstance().addOrder(newOrder);
-            
-            response.sendRedirect("HomePage.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(CheckOutServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -65,6 +65,10 @@ public class MySQLDbcpServlet extends HttpServlet {
         
         cookies.removeAll(cookies);
     }
+    
+    protected boolean validateSessionId(HttpServletRequest request, String sessionId) {
+        return sessionId.equals(request.getSession().getId());
+    }
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response) 
             throws IOException, ServletException {

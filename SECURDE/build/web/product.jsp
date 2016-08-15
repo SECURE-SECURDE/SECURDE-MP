@@ -26,6 +26,17 @@
     Account account = null;
     Product product = null;
     boolean bought = false;
+    String sessionID = "";
+    
+    try {
+        sessionID = request.getParameter("SESSION_ID");
+        
+        if(!sessionID.equals(request.getSession().getId())) {
+            response.sendRedirect("CSRF.html");
+        }
+    } catch(NullPointerException ex) {
+        response.sendRedirect("CSRF.html");
+    }
     
     try {
         productID = Integer.parseInt((String)request.getParameter(Product.PRODUCT_ID));
@@ -94,6 +105,7 @@
             </div>
             <div class="panel-body">
                 <form class="form-horizontal" action="AddToCartServlet" method="post">
+                    <input type="hidden" name="SESSION_ID" value="<%=sessionID%>"/>
                     <input type="hidden" name="<%=LineItem.PRODUCT_ID%>" value="<%=productID%>"/>
                     <div class="form-group">
                         <label for="<%=LineItem.QTY%>" class="col-md-3 control-label">
