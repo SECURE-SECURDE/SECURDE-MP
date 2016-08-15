@@ -22,6 +22,8 @@ public class Account {
     public final static String FIRSTNAME =      "f_name";
     public final static String LASTNAME =       "l_name";
     public final static String MIDDLEINITIAL =  "m_initial";
+    public final static String LOG_IN_ATTEMPT = "login_attempts";
+    public final static int MAX_LOGIN_ATTEMPT = 5;
     
     private int accountId;
     private String username;
@@ -30,6 +32,7 @@ public class Account {
     private String firstName;
     private String lastName;
     private String middleInitial;
+    private int loginAttempts;
     
     public static class AccountBuilder {
         private int accountId = 0;
@@ -39,6 +42,7 @@ public class Account {
         private String firstName;
         private String lastName;
         private String middleInitial;
+        private int loginAttempts = 0;
         
         public AccountBuilder() {
             
@@ -79,12 +83,17 @@ public class Account {
             return this;
         }
         
+        public AccountBuilder loginAttempt(int loginAttempts) {
+            this.loginAttempts = loginAttempts;
+            return this;
+        }
+        
         public Account build() {
-            return new Account(accountId, username, password, email, firstName, lastName, middleInitial);
+            return new Account(accountId, username, password, email, firstName, lastName, middleInitial, loginAttempts);
         }
     }
  
-    private Account(int accountId, String username, String password, String email, String firstName, String lastName, String middleInitial) {
+    private Account(int accountId, String username, String password, String email, String firstName, String lastName, String middleInitial, int loginAttempts) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -92,10 +101,7 @@ public class Account {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleInitial = middleInitial;
-    }
-    
-    public void giveID(int accountId) {
-        this.accountId = accountId;
+        this.loginAttempts = loginAttempts;
     }
     
     public int getID() {
@@ -106,48 +112,34 @@ public class Account {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getMiddleInitial() {
         return middleInitial;
     }
 
-    public void setMiddleInitial(String middleInitial) {
-        this.middleInitial = middleInitial;
+    public int getLoginAttempts() {
+        return this.loginAttempts;
+    }
+    
+    public int addLoginAttempt() {
+        this.loginAttempts++;
+        
+        return this.loginAttempts;
     }
     
     @Override

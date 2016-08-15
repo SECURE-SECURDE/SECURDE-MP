@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/SECURDE">
+<Context path="/SECURDE" disableURLRewriting="true">
 
 <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" 
             maxTotal="100" maxIdle="30" maxWaitMillis="100000" 
