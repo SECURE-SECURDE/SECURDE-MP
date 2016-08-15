@@ -23,6 +23,10 @@
         <servlet-name>AddProductServlet</servlet-name>
         <servlet-class>AddProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <servlet-class>AddToCartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MySQLDbcpExample</servlet-name>
         <url-pattern>/trydbcp</url-pattern>
@@ -47,6 +51,10 @@
         <servlet-name>AddProductServlet</servlet-name>
         <url-pattern>/AddProductServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <url-pattern>/AddToCartServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -57,10 +65,10 @@
         <cookie-config>
             <http-only>
                 true
-            </http-only>   
+            </http-only>
             <secure>
                 true
-            </secure>  
+            </secure>
         </cookie-config>
     </session-config>
 </web-app>

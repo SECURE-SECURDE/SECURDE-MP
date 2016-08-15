@@ -18,7 +18,7 @@
 </head>
 
 <%
-    int productID = Integer.parseInt((String)request.getParameter(Product.PRODUCT_ID));
+    int productID = Integer.parseInt((String)request.getParameter(LineItem.PRODUCT_ID));
     int qty = Integer.parseInt((String)request.getParameter(LineItem.QTY));
     double price = Double.parseDouble((String)request.getParameter(LineItem.TOTAL_PRICE));
     
@@ -39,14 +39,14 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><%=qty%></td>
-                    <td><%=product.getProductName()%></td>
-                    <td>$<%=price%></td>
+                    <td><c:out value="<%=qty%>"/></td>
+                    <td><c:out value="<%=product.getProductName()%>"/></td>
+                    <td><c:out value="$<%=price%>"/></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td align="right"><b>Total Price</b></td>
-                    <td>$<%=price%></td>
+                    <td><c:out value ="$<%=price%>"/></td>
                 </tr>
             </tbody>
         </table>

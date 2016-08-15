@@ -21,8 +21,8 @@
 </head>
 
 <% 
-    int accountID = 0;
     int productID = 0;
+    Account account = null;
     Product product = null;
     boolean bought = false;
     
@@ -30,18 +30,10 @@
         productID = Integer.parseInt((String)request.getParameter(Product.PRODUCT_ID));
         product = ProductModel.getInstance().getProductById(productID);
         
-        for(Cookie cookie: request.getCookies()) {
-            if(cookie.getName().equals(Account.ACCOUNT_ID)) {
-                accountID = Integer.parseInt(cookie.getValue());
-            }
-        }
+        account = (Account)request.getSession().getAttribute(Account.TABLE_NAME);
         
-        bought = ProductModel.getInstance().boughtByUser(productID, accountID);
+        bought = ProductModel.getInstance().boughtByUser(productID, account.getID());
     } catch(NullPointerException noValue) {
-        response.sendRedirect("login.html");
-    }
-    
-    if(accountID == 0) {
         response.sendRedirect("login.html");
     }
 %>
@@ -73,7 +65,7 @@
             $.ajax({
                 url: "PostServlet",
                 data: {
-                        <%=Review.USER_ID%>: "<%=accountID%>",
+                        <%=Review.USER_ID%>: "<%=account.getID()%>",
                         <%=Review.PRODUCT_ID%>: "<%=productID%>",
                         <%=Review.REVIEW%>: $("#review").val()
                      },
@@ -101,7 +93,7 @@
             </div>
             <div class="panel-body">
                 <form class="form-horizontal" action="checkout.jsp" method="post">
-                    <input type="hidden" name="<%=Product.PRODUCT_ID%>" value="<%=productID%>"/>
+                    <input type="hidden" name="<%=LineItem.PRODUCT_ID%>" value="<%=productID%>"/>
                     <div class="form-group">
                         <label for="<%=LineItem.QTY%>" class="col-md-3 control-label">
                             Quantity:
@@ -152,8 +144,8 @@
                 <ul class="list-group">
                     <c:forEach var="row" items="${rs.rows}">
                         <li class="list-group-item">
-                            <b>${row.username}</b>
-                            <p>${row.review}</p>
+                            <b><c:out value="${row.username}"/></b>
+                            <p><c:out value="${row.review}"/></p>
                         </li>
                     </c:forEach>
                 </ul>

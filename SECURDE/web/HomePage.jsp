@@ -21,20 +21,11 @@
 </head>
 
 <%
+    Account account = null;
     try {
-        int accountID = 0;
-        
-        for(Cookie cookie:request.getCookies()) {
-            if(cookie.getName().equals(Account.ACCOUNT_ID)) {
-                accountID = Integer.parseInt(cookie.getValue());
-            }
-        }
-        
-        if(accountID == 0) {
-            response.sendRedirect("login.html");
-        }
+        account = (Account)request.getSession().getAttribute(Account.TABLE_NAME);
     } catch(NullPointerException noCookies) {
-        response.sendRedirect("login.html");
+        response.sendRedirect("login.jsp");
     } 
 %>
 
