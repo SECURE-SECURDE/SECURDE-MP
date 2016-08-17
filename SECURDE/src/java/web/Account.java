@@ -1,5 +1,7 @@
 package web;
 
+import java.sql.Date;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,6 +25,7 @@ public class Account {
     public final static String LASTNAME =       "l_name";
     public final static String MIDDLEINITIAL =  "m_initial";
     public final static String LOG_IN_ATTEMPT = "login_attempts";
+    public final static String LOCK_DATE = "lock_date";
     public final static int MAX_LOGIN_ATTEMPT = 5;
     
     private int accountId;
@@ -33,6 +36,7 @@ public class Account {
     private String lastName;
     private String middleInitial;
     private int loginAttempts;
+    private Date lockDate;
     
     public static class AccountBuilder {
         private int accountId = 0;
@@ -43,6 +47,7 @@ public class Account {
         private String lastName;
         private String middleInitial;
         private int loginAttempts = 0;
+        private Date lockDate;
         
         public AccountBuilder() {
             
@@ -88,12 +93,17 @@ public class Account {
             return this;
         }
         
+        public AccountBuilder lockDate(Date lockDate) {
+            this.lockDate = lockDate;
+            return this;
+        } 
+        
         public Account build() {
-            return new Account(accountId, username, password, email, firstName, lastName, middleInitial, loginAttempts);
+            return new Account(accountId, username, password, email, firstName, lastName, middleInitial, loginAttempts, lockDate);
         }
     }
  
-    private Account(int accountId, String username, String password, String email, String firstName, String lastName, String middleInitial, int loginAttempts) {
+    private Account(int accountId, String username, String password, String email, String firstName, String lastName, String middleInitial, int loginAttempts, Date lockDate) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -102,6 +112,7 @@ public class Account {
         this.lastName = lastName;
         this.middleInitial = middleInitial;
         this.loginAttempts = loginAttempts;
+        this.lockDate = lockDate;
     }
     
     public int getID() {

@@ -1,16 +1,17 @@
 package web.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import org.mindrot.jbcrypt.BCrypt;
-import sun.rmi.runtime.Log;
 import web.Account;
 import web.WebConnection;
 
@@ -106,7 +107,7 @@ public final class AccountModel {
         
         public boolean validateAccount(String username, String password) throws SQLException {
             String sql = "SELECT " + Account.EMAIL + ", " + Account.USERNAME +
-                    ", " + Account.PASSWORD + " FROM " + Account.TABLE_NAME + 
+                    ", " + Account.PASSWORD + ", " + Account.LOCK_DATE + " FROM " + Account.TABLE_NAME + 
                     " WHERE " + Account.USERNAME + "=? OR " + Account.EMAIL+ "=?";
             
             PreparedStatement ps = con.prepareStatement(sql);
@@ -116,6 +117,16 @@ public final class AccountModel {
             rs.beforeFirst();
             
             while(rs.next()) {
+                
+                try {
+                    Date rsLockDate = rs.getDate(Account.LOCK_DATE);
+                    if(!rsLockDate.before(Date.valueOf(LocalDate.now()))) {
+                        return false;
+                    }
+                } catch(NullPointerException ex) {
+                    
+                }
+                
                 String rsPassword = rs.getString(Account.PASSWORD);
                 if(BCrypt.checkpw(password, rsPassword)) {
                     return true;
@@ -155,6 +166,19 @@ public final class AccountModel {
         } catch(NullPointerException ex) {
             return 0;
         }
+    }
+    
+    public void setLockDate(String user) throws SQLException {
+        Account account = getAccountByUsernameOrEmail(user);
+        
+        String sql = "UPDATE " + Account.TABLE_NAME + " SET " +
+                    Account.LOCK_DATE + " = CURRENT_TIMESTAMP WHERE " +
+                    Account.ACCOUNT_ID + " = ?";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        
+        ps.setInt(1, account.getID());
+        ps.executeUpdate();   
     }
 }
 

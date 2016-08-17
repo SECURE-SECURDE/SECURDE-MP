@@ -57,14 +57,19 @@ public class LogInServlet extends MySQLDbcpServlet {
             } else {
                 if(AccountModel.getInstance().addLoginAttempt(user) < Account.MAX_LOGIN_ATTEMPT) {
                     this.addToSession(request, "login_error", true);
+                } else {
+                    AccountModel.getInstance().setLockDate(user);
                     
-                    response.sendRedirect("login.jsp");
+                    this.addToSession(request, "lock_account", true);
                 }
+                
+                response.sendRedirect("login.jsp");
             }
             
             } catch (SQLException ex) {
-            Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
+                this.addToSession(request, "login_error", true);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

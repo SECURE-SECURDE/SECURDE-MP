@@ -35,7 +35,7 @@ public class Cart {
         return this.totalPrice;
     }
     
-    public double getCartCount() {
+    public int getCartCount() {
         return this.items.size();
     }
 }
