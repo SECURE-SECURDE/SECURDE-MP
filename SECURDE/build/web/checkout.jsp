@@ -34,7 +34,7 @@
     List<LineItem> items = cart.getItems();
 %>
 <body>
-    <div w3-include-html="navbar.html"></div>
+    <div w3-include-html="navbar.jsp"></div>
     <script>w3IncludeHTML();</script>
 
     <div class="checkout-items col-md-6">

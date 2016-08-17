@@ -34,4 +34,8 @@ public class Cart {
     public double getTotalPrice() {
         return this.totalPrice;
     }
+    
+    public double getCartCount() {
+        return this.items.size();
+    }
 }

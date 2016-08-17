@@ -32,7 +32,7 @@
 %>
 
 <body>
-    <div w3-include-html="navbar.html"></div>
+    <div w3-include-html="navbar.jsp"></div>
     <script>w3IncludeHTML();</script>
 
     <div class="product-list-container">
