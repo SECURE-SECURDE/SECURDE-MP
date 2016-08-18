@@ -13,7 +13,7 @@
     
     <script>
         function validate() {
-            if($("#inputPassword3").val() != $("#inputPassword4").val()) {
+            if($("#inputPassword3").val() !== $("#inputPassword4").val()) {
                 $("#inputPassword4").parent().parent().addClass("has-error");
                 $("#inputPassword4").parent().append("<span class='help-inline'>Passwords do not match</span>");
                 return false;
