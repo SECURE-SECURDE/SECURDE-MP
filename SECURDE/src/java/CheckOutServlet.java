@@ -35,6 +35,9 @@ public class CheckOutServlet extends MySQLDbcpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        super.doPost(request, response);
+        
         try {
             if(this.validateSessionId(request, request.getParameter("SESSION_ID"))) {
                 Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);

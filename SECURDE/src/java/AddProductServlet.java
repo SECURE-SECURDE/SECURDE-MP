@@ -32,6 +32,9 @@ public class AddProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        super.doPost(request, response);
+        
         String productName = request.getParameter(Product.PRODUCT_NAME);
         String productDescription = request.getParameter(Product.PRODUCT_DESCRIPTION);
         double productPrice = Double.parseDouble(request.getParameter(Product.PRODUCT_PRICE));
@@ -47,7 +50,6 @@ public class AddProductServlet extends HttpServlet {
             response.sendRedirect("AdminPage.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(1, "Invalid product details");
         }
     }
 

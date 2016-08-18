@@ -16,7 +16,7 @@ import web.LineItem;
  *
  * @author user
  */
-public class AddToCartServlet extends HttpServlet {
+public class AddToCartServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,21 +29,29 @@ public class AddToCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        super.doPost(request, response);
+        
         Cart cart = (Cart)request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
         
+        String sessionId = request.getParameter("SESSION_ID");
         int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
         int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
         double price = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
         
-        LineItem item = new LineItem.LineItemBuilder()
-                            .productId(productId)
-                            .qty(qty)
-                            .totalPrice(price)
-                            .build();
-        
-        cart.addItem(item);
-        
-        response.sendRedirect("HomePage.jsp");
+        if(this.validateSessionId(request, sessionId)) {
+            LineItem item = new LineItem.LineItemBuilder()
+                                .productId(productId)
+                                .qty(qty)
+                                .totalPrice(price)
+                                .build();
+
+            cart.addItem(item);
+
+            response.sendRedirect("HomePage.jsp");
+        } else {
+            response.sendRedirect("CSRF.html");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

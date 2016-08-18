@@ -19,7 +19,7 @@ import web.model.ReviewModel;
  *
  * @author user
  */
-public class PostServlet extends HttpServlet {
+public class PostServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,21 +33,26 @@ public class PostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        try {
+        super.doPost(request, response);
+        
+        if(this.validateSessionId(request, request.getSession().getId())) {
             int userId = Integer.parseInt(request.getParameter(Review.USER_ID));
             int productId = Integer.parseInt(request.getParameter(Review.PRODUCT_ID));
             String review = request.getParameter(Review.REVIEW);
-            
-            Review rev = new Review.ReviewBuilder()
-                    .userId(userId)
-                    .review(review)
-                    .productId(productId)
-                    .build();
-            
-            ReviewModel.getInstance().addReview(rev);
-        } catch (SQLException ex) {
-            Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(0);
+
+            try {
+                Review rev = new Review.ReviewBuilder()
+                        .userId(userId)
+                        .review(review)
+                        .productId(productId)
+                        .build();
+
+                ReviewModel.getInstance().addReview(rev);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
+                response.sendError(0);
+            }
         }
     }
 

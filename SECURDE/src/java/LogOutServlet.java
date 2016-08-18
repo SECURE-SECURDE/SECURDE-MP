@@ -28,6 +28,9 @@ public class LogOutServlet extends MySQLDbcpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        super.doPost(request, response);
+        
         try {
             this.invalidateSession();
             this.clearCookies();

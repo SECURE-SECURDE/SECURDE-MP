@@ -21,11 +21,12 @@
         boolean lock_out = false;
         
         try {
-           login_error = (boolean)request.getSession().getAttribute("login_error");
-           lock_out = (boolean) request.getSession().getAttribute("lock_account");
+           login_error = (boolean)request.getSession(true).getAttribute("login_error");
+           lock_out = (boolean) request.getSession(true).getAttribute("lock_account");
         } catch(NullPointerException ex) {}
         
         if(lock_out) {
+            request.getSession().invalidate();
             response.sendRedirect("lockAccount.html");
         }
             

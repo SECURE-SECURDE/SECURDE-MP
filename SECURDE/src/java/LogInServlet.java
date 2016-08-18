@@ -32,7 +32,9 @@ public class LogInServlet extends MySQLDbcpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+        
+        super.doPost(request, response);
+        
         String user = request.getParameter("user");
         String pwd = request.getParameter("pwd");
 
@@ -59,8 +61,10 @@ public class LogInServlet extends MySQLDbcpServlet {
                     this.addToSession("login_error", true);
                 } else {
                     AccountModel.getInstance().setLockDate(user);
-                    
+                    this.addToSession("login_error", true);
                     this.addToSession("lock_account", true);
+                    
+                    AccountModel.getInstance().resetAttempts(user);
                 }
                 
                 response.sendRedirect("login.jsp");

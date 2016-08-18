@@ -26,7 +26,7 @@ public class MySQLDbcpServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("X-FRAME-OPTIONS", "DENY");
+        doFilter(request, response);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MySQLDbcpServlet extends HttpServlet {
     public void invalidateSession() {
         try {
             session.invalidate();
-        } catch (NullPointerException ex) {
+        } catch (NullPointerException | IllegalStateException ex) {
             //No session was created
         }
     }
@@ -79,5 +79,6 @@ public class MySQLDbcpServlet extends HttpServlet {
             throws IOException, ServletException {
         HttpServletResponse res = new HttpServletResponseWrapper(response);
         res.addHeader("X-FRAME-OPTIONS", "SAMEORIGIN");
+        res.addHeader("X-XSS-Protection", "1");
     }
 }
