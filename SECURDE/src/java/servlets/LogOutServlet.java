@@ -33,16 +33,13 @@ public class LogOutServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.sameOrigin(request)) {
-            try {
-                this.invalidateSession();
-                this.clearCookies();
-            } catch(NullPointerException noCookie) {}
+        try {
+            this.invalidateSession();
+            this.clearCookies();
+        } catch(NullPointerException noCookie) {}
 
-            response.sendRedirect("login.jsp");
-        } else {
-            response.sendRedirect(ACCESS_DENIED_URL);
-        }
+        response.sendRedirect("login.jsp");
+         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

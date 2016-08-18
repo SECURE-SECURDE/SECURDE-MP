@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -89,7 +91,9 @@ public class MySQLDbcpServlet extends HttpServlet {
     public static boolean sameOrigin(HttpServletRequest request) {
         try {
             String origin = request.getHeader("Origin");
-
+            
+            Logger.getLogger(MySQLDbcpServlet.class.getName()).log(Level.INFO, origin);
+            
             if(origin.equals("https://192.168.1.30:8443") || origin.equals("https://localhost:8443")) {
                 return true;
             } else {
