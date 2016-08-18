@@ -12,17 +12,13 @@
 <%
     Account account = null;
     
-    if(MySQLDbcpServlet.sameOrigin(request)) {
-        try {
-            account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
-
-            if(!AccountModel.getInstance().isAdmin(account.getID())) {
-                response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
-            }
-        } catch (NullPointerException ex) {}
-    } else {
-        response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
-    }
+    try {
+        account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
+        
+        if(!AccountModel.getInstance().isAdmin(account.getID())) {
+            response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+        }
+    } catch (NullPointerException ex) {}
 %>
 
 <html>
