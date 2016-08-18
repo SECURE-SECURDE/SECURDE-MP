@@ -1,3 +1,4 @@
+<%@page import="servlets.MySQLDbcpServlet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*, web.*, web.model.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
@@ -7,6 +8,18 @@
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
+<%
+    Account account = null;
+    
+    try {
+        account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
+        
+        if(!AccountModel.getInstance().isAdmin(account.getID())) {
+            response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+        }
+    } catch (NullPointerException ex) {}
+%>
 
 <html>
 <head>
@@ -21,6 +34,9 @@
 </head>
 
 <body>
+    <div w3-include-html="navbar.html"></div>
+    <script>w3IncludeHTML();</script>
+    
     <div class="panel panel-default">
         <div class="panel-heading">
             Add Product

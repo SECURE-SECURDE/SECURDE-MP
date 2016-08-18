@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,6 +14,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import web.Cart;
 import web.model.AccountModel;
 
 /**
@@ -31,28 +34,49 @@ public class LogInServlet extends MySQLDbcpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
-        String user = request.getParameter("user");
-        String pwd = request.getParameter("pwd");
+        
+        super.doPost(request, response);
+        
+        if(this.sameOrigin(request)) {
+            String user = request.getParameter("user");
+            String pwd = request.getParameter("pwd");
 
-        try {            
-            
-            if(AccountModel.getInstance().validateAccount(user, pwd)) {
-                Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
-                
-                this.addCookieToList(Account.ACCOUNT_ID, String.valueOf(account.getID()), expiry);
-                this.addCookiesToResponse(response);
-                
-                if(AccountModel.getInstance().isAdmin(account.getID())) {
-                    response.sendRedirect("AdminPage.jsp");
+            try {            
+                this.invalidateSession();
+                this.newSession(request.getSession(true));
+                this.clearCookies();
+
+                if(AccountModel.getInstance().validateAccount(user, pwd)) {
+                    Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
+
+                    this.addToSession(Account.TABLE_NAME, account);
+                    this.addToSession("login_error", false);
+                    this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
+
+                    if(AccountModel.getInstance().isAdmin(account.getID())) {
+                        response.sendRedirect("AdminPage.jsp");
+                    } else {
+                        response.sendRedirect("HomePage.jsp");
+                    }
+                    
                 } else {
-                    response.sendRedirect("HomePage.jsp");
+                    if(AccountModel.getInstance().addLoginAttempt(user) < Account.MAX_LOGIN_ATTEMPT) {
+                        this.addToSession("login_error", true);
+                    } else {
+                        AccountModel.getInstance().setLockDate(user);
+                        this.addToSession("login_error", true);
+                        this.addToSession("lock_account", true);
+                    }
+
+                    response.sendRedirect("login.jsp");
                 }
-            }
-            
-            } catch (SQLException ex) {
-            Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(100, "Invalid Credentials: " + user + " " + pwd);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    this.addToSession("login_error", true);
+                }
+        } else {
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 

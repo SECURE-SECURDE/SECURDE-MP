@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,22 +7,18 @@
  */
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.Review;
-import web.model.ReviewModel;
+import web.Cart;
+import web.LineItem;
 
 /**
  *
  * @author user
  */
-public class PostServlet extends HttpServlet {
+public class AddToCartServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,21 +32,31 @@ public class PostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        try {
-            int userId = Integer.parseInt(request.getParameter(Review.USER_ID));
-            int productId = Integer.parseInt(request.getParameter(Review.PRODUCT_ID));
-            String review = request.getParameter(Review.REVIEW);
-            
-            Review rev = new Review.ReviewBuilder()
-                    .userId(userId)
-                    .review(review)
-                    .productId(productId)
-                    .build();
-            
-            ReviewModel.getInstance().addReview(rev);
-        } catch (SQLException ex) {
-            Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(0);
+        super.doPost(request, response);
+        
+        if(this.sameOrigin(request)) {
+            Cart cart = (Cart)request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+
+            String sessionId = request.getParameter("SESSION_ID");
+            int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
+            int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
+            double price = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
+
+            if(this.validateSessionId(request, sessionId)) {
+                LineItem item = new LineItem.LineItemBuilder()
+                                    .productId(productId)
+                                    .qty(qty)
+                                    .totalPrice(price)
+                                    .build();
+
+                cart.addItem(item);
+
+                response.sendRedirect("HomePage.jsp");
+            } else {
+                response.sendRedirect(ACCESS_DENIED_URL);
+            }
+        } else {
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 

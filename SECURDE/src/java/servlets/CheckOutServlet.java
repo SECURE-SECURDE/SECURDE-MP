@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,22 +7,24 @@
  */
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.Product;
-import web.model.ProductModel;
+import web.Account;
+import web.Cart;
+import web.LineItem;
+import web.Order;
+import web.model.OrderModel;
 
 /**
  *
  * @author user
  */
-public class AddProductServlet extends HttpServlet {
+public class CheckOutServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,22 +37,36 @@ public class AddProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productName = request.getParameter(Product.PRODUCT_NAME);
-        String productDescription = request.getParameter(Product.PRODUCT_DESCRIPTION);
-        double productPrice = Double.parseDouble(request.getParameter(Product.PRODUCT_PRICE));
         
-        Product product = new Product.ProductBuilder()
-                                .productName(productName)
-                                .description(productDescription)
-                                .price(productPrice)
-                                .build();
+        super.doPost(request, response);
         
-        try {
-            ProductModel.getInstance().addProduct(product);
-            response.sendRedirect("AdminPage.jsp");
-        } catch (SQLException ex) {
-            Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendError(1, "Invalid product details");
+        if(this.sameOrigin(request)) {
+            try {
+                if(this.validateSessionId(request, request.getParameter("SESSION_ID"))) {
+                    Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
+                    Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+                    List<LineItem> items = cart.getItems();
+
+                    Order newOrder = new Order.OrderBuilder()
+                            .userId(account.getID())
+                            .build();
+
+                    for(LineItem item: items) {
+                        newOrder.addLineItem(item);
+                    }
+
+                    OrderModel.getInstance().addOrder(newOrder);
+
+                    this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
+                    response.sendRedirect("HomePage.jsp");
+                } else {
+                    response.sendRedirect(ACCESS_DENIED_URL);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CheckOutServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 

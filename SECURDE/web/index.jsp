@@ -16,6 +16,6 @@
     </head>
     
     <body>
-        <% response.sendRedirect("login.html"); %>
+        <% response.sendRedirect("login.jsp"); %>
     </body>
 </html>

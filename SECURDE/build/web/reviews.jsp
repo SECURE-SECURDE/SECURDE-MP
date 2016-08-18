@@ -1,14 +1,19 @@
+<%@page import="servlets.MySQLDbcpServlet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*, web.*, web.model.*"%>
-<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*, servlets.*" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
-    int productID = Integer.parseInt(request.getParameter(Product.PRODUCT_ID));
-    
-    Product product = ProductModel.getInstance().getProductById(productID);
+    Product product = null;
+    if(MySQLDbcpServlet.sameOrigin(request)) {
+        int productID = Integer.parseInt(request.getParameter(Product.PRODUCT_ID));
+        product = ProductModel.getInstance().getProductById(productID);
+    } else {
+        response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+    }
 %>
 
 <sql:setDataSource var="ds" dataSource="jdbc/securde"/>
