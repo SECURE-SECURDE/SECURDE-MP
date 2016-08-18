@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*, web.*, web.model.*"%>
-<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*, servlets.*" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -27,15 +27,19 @@
     Product product = null;
     boolean bought = false;
     String sessionID = "";
-    
+    String redirect = "login.jsp";
     try {
         sessionID = request.getParameter("SESSION_ID");
         
-        if(!sessionID.equals(request.getSession().getId())) {
-            response.sendRedirect("CSRF.html");
+        if(MySQLDbcpServlet.sameOrigin(request)) {
+            if(!sessionID.equals(request.getSession().getId())) {
+                response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+            }
+        } else {
+            response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
         }
     } catch(NullPointerException ex) {
-        response.sendRedirect("CSRF.html");
+        response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
     }
     
     try {
@@ -46,7 +50,7 @@
         
         bought = ProductModel.getInstance().boughtByUser(productID, account.getID());
     } catch(NullPointerException noValue) {
-        response.sendRedirect("login.html");
+        response.sendRedirect("login.jsp");
     }
 %>
 

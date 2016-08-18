@@ -1,25 +1,27 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+import web.Account;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.Review;
-import web.model.ReviewModel;
+import web.Cart;
+import web.model.AccountModel;
 
 /**
  *
- * @author user
+ * @author Miko Garcia
  */
-public class PostServlet extends MySQLDbcpServlet {
+public class LogInServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,24 +37,48 @@ public class PostServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.validateSessionId(request, request.getSession().getId())) {
-            int userId = Integer.parseInt(request.getParameter(Review.USER_ID));
-            int productId = Integer.parseInt(request.getParameter(Review.PRODUCT_ID));
-            String review = request.getParameter(Review.REVIEW);
+        if(this.sameOrigin(request)) {
+            String user = request.getParameter("user");
+            String pwd = request.getParameter("pwd");
 
-            try {
-                Review rev = new Review.ReviewBuilder()
-                        .userId(userId)
-                        .review(review)
-                        .productId(productId)
-                        .build();
+            try {            
+                this.invalidateSession();
+                this.newSession(request.getSession(true));
+                this.clearCookies();
 
-                ReviewModel.getInstance().addReview(rev);
-                
-            } catch (SQLException ex) {
-                Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
-                response.sendError(0);
-            }
+                if(AccountModel.getInstance().validateAccount(user, pwd)) {
+                    Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
+
+                    this.addToSession(Account.TABLE_NAME, account);
+                    this.addToSession("login_error", false);
+                    this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
+
+                    if(AccountModel.getInstance().isAdmin(account.getID())) {
+                        response.sendRedirect("AdminPage.jsp");
+                    } else {
+                        response.sendRedirect("HomePage.jsp");
+                    }
+
+                } else {
+                    if(AccountModel.getInstance().addLoginAttempt(user) < Account.MAX_LOGIN_ATTEMPT) {
+                        this.addToSession("login_error", true);
+                    } else {
+                        AccountModel.getInstance().setLockDate(user);
+                        this.addToSession("login_error", true);
+                        this.addToSession("lock_account", true);
+
+                        AccountModel.getInstance().resetAttempts(user);
+                    }
+
+                    response.sendRedirect("login.jsp");
+                }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    this.addToSession("login_error", true);
+                }
+        } else {
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 
@@ -82,6 +108,7 @@ public class PostServlet extends MySQLDbcpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        super.doPost(request, response);
         processRequest(request, response);
     }
 

@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,14 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.Product;
-import web.model.ProductModel;
+import web.Review;
+import web.model.ReviewModel;
 
 /**
  *
  * @author user
  */
-public class AddProductServlet extends HttpServlet {
+public class PostServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,21 +37,28 @@ public class AddProductServlet extends HttpServlet {
         
         super.doPost(request, response);
         
-        String productName = request.getParameter(Product.PRODUCT_NAME);
-        String productDescription = request.getParameter(Product.PRODUCT_DESCRIPTION);
-        double productPrice = Double.parseDouble(request.getParameter(Product.PRODUCT_PRICE));
-        
-        Product product = new Product.ProductBuilder()
-                                .productName(productName)
-                                .description(productDescription)
-                                .price(productPrice)
-                                .build();
-        
-        try {
-            ProductModel.getInstance().addProduct(product);
-            response.sendRedirect("AdminPage.jsp");
-        } catch (SQLException ex) {
-            Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+        if(this.sameOrigin(request)) {
+            if(this.validateSessionId(request, request.getSession().getId())) {
+                int userId = Integer.parseInt(request.getParameter(Review.USER_ID));
+                int productId = Integer.parseInt(request.getParameter(Review.PRODUCT_ID));
+                String review = request.getParameter(Review.REVIEW);
+
+                try {
+                    Review rev = new Review.ReviewBuilder()
+                            .userId(userId)
+                            .review(review)
+                            .productId(productId)
+                            .build();
+
+                    ReviewModel.getInstance().addReview(rev);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    response.sendError(0);
+                }
+            }
+        } else {
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 

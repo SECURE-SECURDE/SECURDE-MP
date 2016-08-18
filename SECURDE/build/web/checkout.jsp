@@ -1,3 +1,4 @@
+<%@page import="servlets.MySQLDbcpServlet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*, web.*, web.model.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
@@ -19,8 +20,20 @@
 
 <%  
     String sessionID = request.getSession().getId();
-    Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
-    List<LineItem> items = cart.getItems();
+    Cart cart = new Cart();
+    List<LineItem> items = new ArrayList<>();
+    
+    if(MySQLDbcpServlet.sameOrigin(request)) {
+        try {
+            cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+            items = cart.getItems();
+        } catch (NullPointerException ex) {
+        
+        }
+    } else {
+        response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+    } 
+    
 %>
 <body>
     <div w3-include-html="navbar.jsp"></div>

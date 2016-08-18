@@ -1,3 +1,5 @@
+package servlets;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,8 +19,10 @@ import web.WebConnection;
  * Servlet implementation class MySQLDbcpServlet
  */
 @WebServlet("/MySQLDbcpServlet")
-public class MySQLDbcpServlet extends HttpServlet {
+public class MySQLDbcpServlet extends HttpServlet {    
     private static final long serialVersionUID = 1L;
+    public static final String ACCESS_DENIED_URL = "CSRF.html";
+    
     protected DataSource pool;  // Database connection pool
     protected ArrayList<Cookie> cookies;
     protected HttpSession session;
@@ -80,5 +84,19 @@ public class MySQLDbcpServlet extends HttpServlet {
         HttpServletResponse res = new HttpServletResponseWrapper(response);
         res.addHeader("X-FRAME-OPTIONS", "SAMEORIGIN");
         res.addHeader("X-XSS-Protection", "1");
+    }
+    
+    public static boolean sameOrigin(HttpServletRequest request) {
+        try {
+            String origin = request.getHeader("Origin");
+
+            if(origin.equals("https://192.168.1.30:8443") || origin.equals("https://localhost:8443")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException ex) {
+            return false;
+        }
     }
 }

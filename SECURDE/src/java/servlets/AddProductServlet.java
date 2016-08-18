@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,23 +8,20 @@
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import web.Account;
-import web.Cart;
-import web.LineItem;
-import web.Order;
-import web.model.OrderModel;
+import web.Product;
+import web.model.ProductModel;
 
 /**
  *
  * @author user
  */
-public class CheckOutServlet extends MySQLDbcpServlet {
+public class AddProductServlet extends MySQLDbcpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,29 +37,25 @@ public class CheckOutServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        try {
-            if(this.validateSessionId(request, request.getParameter("SESSION_ID"))) {
-                Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
-                Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
-                List<LineItem> items = cart.getItems();
+        if(this.sameOrigin(request)) {
+            String productName = request.getParameter(Product.PRODUCT_NAME);
+            String productDescription = request.getParameter(Product.PRODUCT_DESCRIPTION);
+            double productPrice = Double.parseDouble(request.getParameter(Product.PRODUCT_PRICE));
 
-                Order newOrder = new Order.OrderBuilder()
-                        .userId(account.getID())
-                        .build();
+            Product product = new Product.ProductBuilder()
+                                    .productName(productName)
+                                    .description(productDescription)
+                                    .price(productPrice)
+                                    .build();
 
-                for(LineItem item: items) {
-                    newOrder.addLineItem(item);
-                }
-
-                OrderModel.getInstance().addOrder(newOrder);
-                
-                this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
-                response.sendRedirect("HomePage.jsp");
-            } else {
-                response.sendRedirect("CSRF.html");
+            try {
+                ProductModel.getInstance().addProduct(product);
+                response.sendRedirect("AdminPage.jsp");
+            } catch (SQLException ex) {
+                Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(CheckOutServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 

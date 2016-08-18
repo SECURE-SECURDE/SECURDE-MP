@@ -9,23 +9,23 @@
     </resource-ref>
     <servlet>
         <servlet-name>MySQLDbcpExample</servlet-name>
-        <servlet-class>MySQLDbcpServlet</servlet-class>
+        <servlet-class>servlets.MySQLDbcpServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CheckOutServlet</servlet-name>
-        <servlet-class>CheckOutServlet</servlet-class>
+        <servlet-class>servlets.CheckOutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostServlet</servlet-name>
-        <servlet-class>PostServlet</servlet-class>
+        <servlet-class>servlets.PostServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddProductServlet</servlet-name>
-        <servlet-class>AddProductServlet</servlet-class>
+        <servlet-class>servlets.AddProductServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddToCartServlet</servlet-name>
-        <servlet-class>AddToCartServlet</servlet-class>
+        <servlet-class>servlets.AddToCartServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MySQLDbcpExample</servlet-name>
@@ -33,7 +33,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>LogInServlet</servlet-name>
-        <servlet-class>LogInServlet</servlet-class>
+        <servlet-class>servlets.LogInServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogInServlet</servlet-name>

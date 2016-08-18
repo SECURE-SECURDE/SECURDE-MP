@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -32,25 +34,29 @@ public class AddToCartServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        Cart cart = (Cart)request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
-        
-        String sessionId = request.getParameter("SESSION_ID");
-        int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
-        int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
-        double price = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
-        
-        if(this.validateSessionId(request, sessionId)) {
-            LineItem item = new LineItem.LineItemBuilder()
-                                .productId(productId)
-                                .qty(qty)
-                                .totalPrice(price)
-                                .build();
+        if(this.sameOrigin(request)) {
+            Cart cart = (Cart)request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
 
-            cart.addItem(item);
+            String sessionId = request.getParameter("SESSION_ID");
+            int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
+            int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
+            double price = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
 
-            response.sendRedirect("HomePage.jsp");
+            if(this.validateSessionId(request, sessionId)) {
+                LineItem item = new LineItem.LineItemBuilder()
+                                    .productId(productId)
+                                    .qty(qty)
+                                    .totalPrice(price)
+                                    .build();
+
+                cart.addItem(item);
+
+                response.sendRedirect("HomePage.jsp");
+            } else {
+                response.sendRedirect(ACCESS_DENIED_URL);
+            }
         } else {
-            response.sendRedirect("CSRF.html");
+            response.sendRedirect(ACCESS_DENIED_URL);
         }
     }
 
