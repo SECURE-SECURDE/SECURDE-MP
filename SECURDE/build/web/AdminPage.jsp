@@ -34,6 +34,9 @@
 </head>
 
 <body>
+    <div w3-include-html="navbar.html"></div>
+    <script>w3IncludeHTML();</script>
+    
     <div class="panel panel-default">
         <div class="panel-heading">
             Add Product
