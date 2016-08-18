@@ -108,7 +108,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Card CCV</label>
-                    <input type="text" class="form-control" required=""/>
+                    <input type="text" class="form-control" pattern="\d{3, 4}" required=""/>
                 </div>
                 <button class="btn btn-success" align="right" type="submit">
                     Purchase

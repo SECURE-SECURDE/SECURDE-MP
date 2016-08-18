@@ -3,15 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/AdminPage.jsp</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/product.jsp</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/checkout.jsp</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/navbar.html</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/HomePage.jsp</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/register.html</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/src/java/CheckOutServlet.java</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/web/CSRF.html</file>
-            <file>file:/C:/Users/user/Documents/GitHub/SECURDE-MP/SECURDE/src/java/MySQLDbcpServlet.java</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/web/checkout.jsp</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/web/product.jsp</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/src/java/web/model/ReviewModel.java</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/src/java/web/model/OrderModel.java</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/src/java/servlets/PostServlet.java</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/web/reviews.jsp</file>
+            <file>file:/C:/Users/Miko%20Garcia/Documents/NetBeansProjects/SECURDE-MP/SECURDE/src/java/web/model/ProductModel.java</file>
         </group>
     </open-files>
 </project-private>
