@@ -18,8 +18,9 @@
     
     <%  
         boolean login_error = false;
+        
         try {
-           login_error = (boolean)request.getSession().getAttribute("login_error");
+           login_error = (boolean)request.getSession(true).getAttribute("login_error");
         } catch(NullPointerException ex) {
             login_error = false;
         }

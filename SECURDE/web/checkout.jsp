@@ -17,19 +17,8 @@
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
 </head>
 
-<% 
-    String sessionID = "";
-    
-    try {
-        sessionID = request.getParameter("SESSION_ID");
-        
-        if(!sessionID.equals(request.getSession().getId())) {
-            response.sendRedirect("CSRF.html");
-        }
-    } catch(NullPointerException ex) {
-        response.sendRedirect("CSRF.html");
-    }
-    
+<%  
+    String sessionID = request.getSession().getId();
     Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
     List<LineItem> items = cart.getItems();
 %>

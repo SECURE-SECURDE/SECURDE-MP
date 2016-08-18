@@ -7,9 +7,13 @@
 
 <%
     int cart_count = 0;
+    String username = "No Name";
+    
     try {
         Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
         cart_count = cart.getCartCount();
+        
+        username = ((Account) request.getSession().getAttribute(Account.TABLE_NAME)).getUsername();
     } catch(NullPointerException ex){
         
     }
@@ -19,6 +23,7 @@
     <div class = "collapse navbar-collapse">
         <ul class = "nav navbar-nav">
             <li><a href="HomePage.jsp">Home</a></li>
+            <li><a href="#"><%=username%></a></li>
             <li><a href="LogOutServlet">Log Out</a></li>
             <li><a href="checkout.jsp">Check Out (<%=cart_count%>)</a></li>
         </ul>	

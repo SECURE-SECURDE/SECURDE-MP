@@ -59,8 +59,10 @@ public class RegisterServlet extends MySQLDbcpServlet {
                         AccountModel.getInstance().addAccount(toAdd);
 
                         Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(toAdd.getUsername());
-
-                        this.addToSession(request, Account.TABLE_NAME, account);
+                        
+                        this.invalidateSession();
+                        this.newSession(request.getSession(true));
+                        this.addToSession(Account.TABLE_NAME, account);
 
                         response.sendRedirect("HomePage.jsp");
                     } else response.sendRedirect("register.html");

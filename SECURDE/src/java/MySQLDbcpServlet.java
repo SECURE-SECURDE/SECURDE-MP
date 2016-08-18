@@ -21,7 +21,7 @@ public class MySQLDbcpServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     protected DataSource pool;  // Database connection pool
     protected ArrayList<Cookie> cookies;
-    protected HttpSession session = null;
+    protected HttpSession session;
     protected final int expiry = 24 * 60 * 60;
     
     @Override
@@ -47,15 +47,20 @@ public class MySQLDbcpServlet extends HttpServlet {
          }
     }
 
-    public void addToSession(HttpServletRequest request, String attributeName, Object attribute) {
-         if(session == null) {
-                 session = request.getSession();
-         }
-         session.setAttribute(attributeName, attribute);
+    public void addToSession(String attributeName, Object attribute) {
+        session.setAttribute(attributeName, attribute);
     }
 
-    public void invalidateSession(HttpServletRequest request) {
-         request.getSession().invalidate();
+    public void invalidateSession() {
+        try {
+            session.invalidate();
+        } catch (NullPointerException ex) {
+            //No session was created
+        }
+    }
+    
+    public void newSession(HttpSession session) {
+        this.session = session;
     }
     
     protected void clearCookies() {

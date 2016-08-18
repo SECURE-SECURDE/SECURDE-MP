@@ -41,12 +41,13 @@ public class LogInServlet extends MySQLDbcpServlet {
             if(AccountModel.getInstance().validateAccount(user, pwd)) {
                 Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
                 
-                this.invalidateSession(request);
+                this.invalidateSession();
+                this.newSession(request.getSession(true));
                 this.clearCookies();
                 
-                this.addToSession(request, Account.TABLE_NAME, account);
-                this.addToSession(request, "login_error", false);
-                this.addToSession(request, Cart.ATTRIBUTE_NAME, new Cart());
+                this.addToSession(Account.TABLE_NAME, account);
+                this.addToSession("login_error", false);
+                this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
                 
                 if(AccountModel.getInstance().isAdmin(account.getID())) {
                     response.sendRedirect("AdminPage.jsp");
@@ -56,11 +57,11 @@ public class LogInServlet extends MySQLDbcpServlet {
                
             } else {
                 if(AccountModel.getInstance().addLoginAttempt(user) < Account.MAX_LOGIN_ATTEMPT) {
-                    this.addToSession(request, "login_error", true);
+                    this.addToSession("login_error", true);
                 } else {
                     AccountModel.getInstance().setLockDate(user);
                     
-                    this.addToSession(request, "lock_account", true);
+                    this.addToSession("lock_account", true);
                 }
                 
                 response.sendRedirect("login.jsp");
@@ -68,7 +69,7 @@ public class LogInServlet extends MySQLDbcpServlet {
             
             } catch (SQLException ex) {
                 Logger.getLogger(LogInServlet.class.getName()).log(Level.SEVERE, null, ex);
-                this.addToSession(request, "login_error", true);
+                this.addToSession("login_error", true);
             }
     }
 
