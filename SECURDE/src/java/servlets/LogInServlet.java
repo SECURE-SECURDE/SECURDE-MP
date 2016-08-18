@@ -58,7 +58,7 @@ public class LogInServlet extends MySQLDbcpServlet {
                     } else {
                         response.sendRedirect("HomePage.jsp");
                     }
-
+                    
                 } else {
                     if(AccountModel.getInstance().addLoginAttempt(user) < Account.MAX_LOGIN_ATTEMPT) {
                         this.addToSession("login_error", true);
@@ -66,8 +66,6 @@ public class LogInServlet extends MySQLDbcpServlet {
                         AccountModel.getInstance().setLockDate(user);
                         this.addToSession("login_error", true);
                         this.addToSession("lock_account", true);
-
-                        AccountModel.getInstance().resetAttempts(user);
                     }
 
                     response.sendRedirect("login.jsp");

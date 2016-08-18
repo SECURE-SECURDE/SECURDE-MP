@@ -20,6 +20,7 @@ public class Cart {
     
     public Cart() {
         items = new ArrayList<>();
+        totalPrice = 0;
     }
     
     public void addItem(LineItem item) {

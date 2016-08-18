@@ -19,21 +19,26 @@
 </head>
 
 <%  
-    String sessionID = request.getSession().getId();
+    String sessionID = "";
     Cart cart = new Cart();
     List<LineItem> items = new ArrayList<>();
     
-    if(MySQLDbcpServlet.sameOrigin(request)) {
-        try {
-            cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
-            items = cart.getItems();
-        } catch (NullPointerException ex) {
-        
-        }
-    } else {
-        response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
-    } 
-    
+    try {
+        sessionID = request.getSession().getId();
+
+        if(MySQLDbcpServlet.sameOrigin(request)) {
+            try {
+                cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
+                items = cart.getItems();
+            } catch (NullPointerException ex) {
+
+            }
+        } else {
+            response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+        } 
+    } catch(NullPointerException ex) {
+        response.sendRedirect(MySQLDbcpServlet.TIMEOUT_URL);
+    }
 %>
 <body>
     <div w3-include-html="navbar.jsp"></div>

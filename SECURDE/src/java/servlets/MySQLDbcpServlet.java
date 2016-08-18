@@ -24,10 +24,11 @@ import web.WebConnection;
 public class MySQLDbcpServlet extends HttpServlet {    
     private static final long serialVersionUID = 1L;
     public static final String ACCESS_DENIED_URL = "CSRF.html";
+    public static final String TIMEOUT_URL = "login.jsp";
     
     protected DataSource pool;  // Database connection pool
     protected ArrayList<Cookie> cookies;
-    protected HttpSession session;
+    protected static HttpSession session;
     protected final int expiry = 24 * 60 * 60;
     
     @Override
@@ -54,6 +55,8 @@ public class MySQLDbcpServlet extends HttpServlet {
     }
 
     public void addToSession(String attributeName, Object attribute) {
+        if(session == null)
+            Logger.getLogger(MySQLDbcpServlet.class.getName()).log(Level.INFO, "Session is null");
         session.setAttribute(attributeName, attribute);
     }
 

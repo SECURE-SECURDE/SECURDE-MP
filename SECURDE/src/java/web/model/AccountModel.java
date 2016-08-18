@@ -124,6 +124,8 @@ public final class AccountModel {
                 Date rsLockDate = rs.getDate(Account.LOCK_DATE);
                 if(!rsLockDate.before(Date.valueOf(LocalDate.now()))) {
                     return false;
+                } else {
+                    this.resetAttempts(username);
                 }
             } catch(NullPointerException ex) {
 
@@ -193,7 +195,8 @@ public final class AccountModel {
         Account account = getAccountByUsernameOrEmail(user);
         
         String sql = "UPDATE " + Account.TABLE_NAME + " SET " +
-                    Account.LOG_IN_ATTEMPT + " = 0 WHERE " +
+                    Account.LOG_IN_ATTEMPT + " = 0, " + 
+                    Account.LOCK_DATE + "= NULL WHERE " +
                     Account.ACCOUNT_ID + " = ?";
         
         PreparedStatement ps = con.prepareStatement(sql);
