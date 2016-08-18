@@ -8,6 +8,7 @@
 <%
     int cart_count = 0;
     String username = "No Name";
+    String checkOutLink = "#";
     
     try {
         Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
@@ -17,6 +18,10 @@
     } catch(NullPointerException ex){
         
     }
+    
+    if(cart_count > 0) {
+        checkOutLink = "checkout.jsp";
+    }
 %>
 
 <nav class = "navbar navbar-default">
@@ -25,7 +30,7 @@
             <li><a href="HomePage.jsp">Home</a></li>
             <li><a href="#"><%=username%></a></li>
             <li class="pull-right"><a href="LogOutServlet">Log Out</a></li>
-            <li><a href="checkout.jsp">Check Out (<%=cart_count%>)</a></li>
+            <li><a href="<%=checkOutLink%>">Check Out (<%=cart_count%>)</a></li>
         </ul>	
     </div>
 </nav>
