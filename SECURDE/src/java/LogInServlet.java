@@ -37,13 +37,12 @@ public class LogInServlet extends MySQLDbcpServlet {
         String pwd = request.getParameter("pwd");
 
         try {            
+            this.invalidateSession();
+            this.newSession(request.getSession(true));
+            this.clearCookies();
             
             if(AccountModel.getInstance().validateAccount(user, pwd)) {
                 Account account = AccountModel.getInstance().getAccountByUsernameOrEmail(user);
-                
-                this.invalidateSession();
-                this.newSession(request.getSession(true));
-                this.clearCookies();
                 
                 this.addToSession(Account.TABLE_NAME, account);
                 this.addToSession("login_error", false);

@@ -18,12 +18,17 @@
     
     <%  
         boolean login_error = false;
+        boolean lock_out = false;
         
         try {
-           login_error = (boolean)request.getSession(true).getAttribute("login_error");
-        } catch(NullPointerException ex) {
-            login_error = false;
+           login_error = (boolean)request.getSession().getAttribute("login_error");
+           lock_out = (boolean) request.getSession().getAttribute("lock_account");
+        } catch(NullPointerException ex) {}
+        
+        if(lock_out) {
+            response.sendRedirect("lockAccount.html");
         }
+            
     %>
     
 </head>
