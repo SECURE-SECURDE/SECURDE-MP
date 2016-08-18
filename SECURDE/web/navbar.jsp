@@ -29,10 +29,9 @@
         <ul class = "nav navbar-nav">
             <li><a href="HomePage.jsp">Home</a></li>
             <li><a href="#"><%=username%></a></li>
-            <li class="pull-right"><a href="#" onclick="document.logoutForm.submit();">Log Out</a></li>
+            <li class="pull-right"><a href="LogOutServlet">Log Out</a></li>
             <li><a href="#" onclick="document.checkoutForm.submit();">Check Out (<%=cart_count%>)</a></li>
         </ul>	
     </div>
     <form name="checkoutForm" action='<%=checkOutLink%>' method='post' aria-hidden="true"/>
-    <form name="logoutForm" action='LogOutServlet' method='post' aria-hidden="true"/>
 </nav>
