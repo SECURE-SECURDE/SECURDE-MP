@@ -22,7 +22,7 @@
     Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
     List<LineItem> items = cart.getItems();
 %>
-<body>
+<body class="container">
     <div w3-include-html="navbar.jsp"></div>
     <script>w3IncludeHTML();</script>
 

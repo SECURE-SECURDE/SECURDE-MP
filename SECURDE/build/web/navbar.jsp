@@ -24,7 +24,7 @@
         <ul class = "nav navbar-nav">
             <li><a href="HomePage.jsp">Home</a></li>
             <li><a href="#"><%=username%></a></li>
-            <li><a href="LogOutServlet">Log Out</a></li>
+            <li class="pull-right"><a href="LogOutServlet">Log Out</a></li>
             <li><a href="checkout.jsp">Check Out (<%=cart_count%>)</a></li>
         </ul>	
     </div>

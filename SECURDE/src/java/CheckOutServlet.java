@@ -50,7 +50,8 @@ public class CheckOutServlet extends MySQLDbcpServlet {
                 }
 
                 OrderModel.getInstance().addOrder(newOrder);
-
+                
+                this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
                 response.sendRedirect("HomePage.jsp");
             } else {
                 response.sendRedirect("CSRF.html");
