@@ -86,11 +86,11 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Expiration Date</label>
-                    <input type="date" class="form-control"/>
+                    <input type="date" class="form-control" required=""/>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Card CCV</label>
-                    <input type="text" class="form-control"/>
+                    <input type="text" class="form-control" required=""/>
                 </div>
                 <button class="btn btn-success" align="right" type="submit">
                     Purchase
