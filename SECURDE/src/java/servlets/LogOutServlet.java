@@ -39,7 +39,6 @@ public class LogOutServlet extends MySQLDbcpServlet {
         } catch(NullPointerException noCookie) {}
 
         response.sendRedirect("login.jsp");
-         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
