@@ -26,6 +26,9 @@
     
     try {
         account = (Account)request.getSession().getAttribute(Account.TABLE_NAME);
+        if(account == null) {
+            response.sendRedirect("login.jsp");
+        }
     } catch(NullPointerException noCookies) {
         response.sendRedirect("login.jsp");
     } 
