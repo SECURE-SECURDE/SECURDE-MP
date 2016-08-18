@@ -23,8 +23,9 @@
 <ul class="list-group">
     <c:forEach var="row" items="${rs.rows}">
         <li class="list-group-item">
-            <b>${row.username}</b>
-            <p>${row.review}</p>
+            <b><c:out value="${row.username}"/></b>
+            <p class="pull-right"><c:out value="${row.review_date}"/></p>
+            <p><c:out value="${row.review}"/></p>
         </li>
     </c:forEach>
 </ul>
