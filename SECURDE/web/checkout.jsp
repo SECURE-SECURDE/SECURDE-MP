@@ -24,7 +24,7 @@
     List<LineItem> items = new ArrayList<>();
     
     try {
-        sessionID = request.getSession().getId();
+        sessionID = request.getSession(false).getId();
 
         if(MySQLDbcpServlet.sameOrigin(request)) {
             try {
