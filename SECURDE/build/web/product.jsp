@@ -90,6 +90,8 @@
                     alert("An error has occured.");
                 }
             });
+            
+            $("#review").val("");
         });
     });
     
