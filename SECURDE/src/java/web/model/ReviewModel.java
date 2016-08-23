@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import web.Account;
-import web.Product;
 import web.Review;
 import web.WebConnection;
 
@@ -29,6 +27,7 @@ public class ReviewModel {
     private ReviewModel()throws SQLException, ServletException {
         list = new ArrayList<>();
         con = WebConnection.getInstance().getDataSource().getConnection();
+        
         updateModelList();
     }
     
@@ -40,7 +39,7 @@ public class ReviewModel {
         return instance;
     }
     
-    protected void updateModelList() throws SQLException, ServletException {
+    private void updateModelList() throws SQLException {
         list.removeAll(list);
         String sql = "SELECT * FROM " + Review.TABLE_NAME;
 	ResultSet rs = con.prepareStatement(sql).executeQuery();
@@ -86,6 +85,8 @@ public class ReviewModel {
         ps.setString(3, rev.getReview());
         
         ps.executeUpdate();
+        
+        updateModelList();
     }
     
 }

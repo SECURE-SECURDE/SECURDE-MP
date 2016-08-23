@@ -28,6 +28,7 @@ public class ProductModel {
     protected ProductModel() throws SQLException, ServletException {
         list = new ArrayList<>();
         con = WebConnection.getInstance().getDataSource().getConnection();
+        
         updateModelList();
     }
     
@@ -39,7 +40,7 @@ public class ProductModel {
             return instance;
     }
     
-    protected void updateModelList() throws SQLException, ServletException {
+    private void updateModelList() throws SQLException, ServletException {
         list.removeAll(list);
 	String sql = "SELECT * FROM " + Product.TABLE_NAME;
 	ResultSet rs = con.prepareStatement(sql).executeQuery();
@@ -81,7 +82,7 @@ public class ProductModel {
         return null;
     }
     
-    public void addProduct(Product product) throws SQLException {
+    public void addProduct(Product product) throws SQLException, ServletException {
         String sql = "INSERT INTO " + Product.TABLE_NAME + " (" +
                     Product.PRODUCT_NAME + ", " + Product.PRODUCT_PRICE + ", " +
                     Product.PRODUCT_DESCRIPTION + ") VALUES (?, ?, ?);";
@@ -93,11 +94,11 @@ public class ProductModel {
         
         ps.executeUpdate();
         ps.close();
+        
+        updateModelList();
     }
         
     public boolean boughtByUser(int productId, int userId) throws SQLException {
-        boolean bought = false;
-        
         String sql = "SELECT * FROM " + LineItem.TABLE_NAME + " L, " + 
                     Order.TABLE_NAME + " O WHERE O." + Order.ORDER_ID + " = L." + 
                     LineItem.ORDER_ID + " AND O." + Order.USER_ID + " = ? AND L." +
@@ -109,7 +110,7 @@ public class ProductModel {
         
         ResultSet rs = ps.executeQuery();
         
-        bought = rs.isBeforeFirst();
+        boolean bought = rs.isBeforeFirst();
         
         ps.close();
         rs.close();

@@ -85,7 +85,7 @@ public class OrderModel {
         }
     }
     
-    public void addOrder(Order order) throws SQLException {
+    public void addOrder(Order order) throws SQLException, ServletException {
         String sql = "INSERT INTO " + Order.TABLE_NAME + "(" + 
                     Order.USER_ID + ", " + Order.TOTAL_PRICE + ") VALUES(?, ?);";
         
@@ -114,5 +114,7 @@ public class OrderModel {
             
             linePs.executeUpdate();
         }
+        
+        updateModelList();
     }
 }

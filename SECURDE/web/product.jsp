@@ -27,20 +27,21 @@
     Product product = null;
     boolean bought = false;
     String sessionID = "";
-    String redirect = "login.jsp";
+    String redirect = "";
+
     try {
         sessionID = request.getParameter("SESSION_ID");
         
         if(MySQLDbcpServlet.sameOrigin(request)) {
             if(!sessionID.equals(request.getSession().getId())) {
-                response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+                redirect = MySQLDbcpServlet.ACCESS_DENIED_URL;
             }
         } else {
-            response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
+            redirect = MySQLDbcpServlet.ACCESS_DENIED_URL;
         }
     } catch(NullPointerException ex) {
-        response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
-    }
+        redirect = MySQLDbcpServlet.ACCESS_DENIED_URL;
+    } 
     
     try {
         productID = Integer.parseInt((String)request.getParameter(Product.PRODUCT_ID));
@@ -49,9 +50,6 @@
         account = (Account)request.getSession().getAttribute(Account.TABLE_NAME);
         
         bought = ProductModel.getInstance().boughtByUser(productID, account.getID());
-    } catch(NullPointerException noValue) {
-        response.sendRedirect("login.jsp");
-    }
 %>
 
 <script>
@@ -92,6 +90,8 @@
                     alert("An error has occured.");
                 }
             });
+            
+            $("#review").val("");
         });
     });
     
@@ -176,4 +176,15 @@
     </div>
 </body>
 
+<%
+    } catch(NullPointerException noValue) {
+        redirect = "login.jsp";
+    } catch(NumberFormatException ex) {
+        redirect = "HomePage.jsp";
+    }
+    
+    if(!redirect.isEmpty()) {
+        response.sendRedirect(redirect);
+    }
+%>
 </html>

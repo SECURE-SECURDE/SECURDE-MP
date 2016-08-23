@@ -49,7 +49,7 @@
                             Username
                         </label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputEmail3" placeholder="Username" name="user" required>
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="Username or email" name="user" required>
                         </div>
                     </div>
                     <div class="form-group">

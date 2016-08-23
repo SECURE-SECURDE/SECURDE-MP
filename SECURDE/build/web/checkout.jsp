@@ -24,7 +24,7 @@
     List<LineItem> items = new ArrayList<>();
     
     try {
-        sessionID = request.getSession().getId();
+        sessionID = request.getSession(false).getId();
 
         if(MySQLDbcpServlet.sameOrigin(request)) {
             try {
@@ -108,7 +108,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Card CCV</label>
-                    <input type="text" class="form-control" required=""/>
+                    <input type="text" class="form-control" maxlength="4" pattern="\d{3,4}" required=""/>
                 </div>
                 <button class="btn btn-success" align="right" type="submit">
                     Purchase
