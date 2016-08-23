@@ -5,7 +5,6 @@
  */
 package web.model;
 
-import com.sun.istack.internal.logging.Logger;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import javax.servlet.ServletException;
 import web.LineItem;
 import web.Order;
@@ -43,7 +41,7 @@ public class OrderModel {
             return instance;
     }
 
-    private void updateModelList() throws SQLException {
+    private void updateModelList() throws SQLException, ServletException {
         list.removeAll(list);
 	String sql = "SELECT * FROM " + Order.TABLE_NAME + ";";
 	ResultSet rs = con.prepareStatement(sql).executeQuery();
@@ -71,14 +69,13 @@ public class OrderModel {
                 int lineId = lineRs.getInt(LineItem.LINE_ID);
                 int productId = lineRs.getInt(LineItem.PRODUCT_ID);
                 int qty = lineRs.getInt(LineItem.QTY);
-                double lineTotal = lineRs.getDouble(LineItem.TOTAL_PRICE);
+                Product product = ProductModel.getInstance().getProductById(productId);
                 
                 LineItem item = new LineItem.LineItemBuilder()
                                     .lineId(lineId)
                                     .orderId(orderId)
-                                    .productId(productId)
+                                    .product(product)
                                     .qty(qty)
-                                    .totalPrice(lineTotal)
                                     .build();
                 
                 order.addLineItem(item);
@@ -111,7 +108,7 @@ public class OrderModel {
         linePs.setInt(1, orderId);
         
         for(LineItem item: order.getLineItems()) {
-            linePs.setInt(2, item.getProductId());
+            linePs.setInt(2, item.getProduct().getProductId());
             linePs.setInt(3, item.getQty());
             linePs.setDouble(4, item.getTotalPrice());
             

@@ -7,12 +7,17 @@ package servlets;
  */
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import web.Cart;
 import web.LineItem;
+import web.Product;
+import web.model.ProductModel;
 
 /**
  *
@@ -40,13 +45,17 @@ public class AddToCartServlet extends MySQLDbcpServlet {
             String sessionId = request.getParameter("SESSION_ID");
             int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
             int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
-            double price = Double.parseDouble(request.getParameter(LineItem.TOTAL_PRICE));
-
+            Product product = null;
+            try {
+                product = ProductModel.getInstance().getProductById(productId);
+            } catch (SQLException ex) {
+                Logger.getLogger(AddToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             if(this.validateSessionId(request, sessionId)) {
                 LineItem item = new LineItem.LineItemBuilder()
-                                    .productId(productId)
+                                    .product(product)
                                     .qty(qty)
-                                    .totalPrice(price)
                                     .build();
 
                 cart.addItem(item);
