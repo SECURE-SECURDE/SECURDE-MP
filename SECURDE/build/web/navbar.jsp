@@ -28,7 +28,7 @@
     <div class = "collapse navbar-collapse">
         <ul class = "nav navbar-nav">
             <li><a href="HomePage.jsp">Home</a></li>
-            <li><a href="#"><%=username%></a></li>
+            <li><a href="#"><c:out value="<%=username%>"/></a></li>
             <li class="pull-right"><a href="LogOutServlet">Log Out</a></li>
             <li><a href="#" onclick="document.checkoutForm.submit();">Check Out (<%=cart_count%>)</a></li>
         </ul>	
