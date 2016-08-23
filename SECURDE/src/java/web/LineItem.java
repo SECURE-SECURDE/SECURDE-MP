@@ -20,16 +20,14 @@ public class LineItem {
     
     private int lineId;
     private int orderId;
-    private int productId;
+    private Product product;
     private int qty;
-    private double totalPrice;
     
     public static class LineItemBuilder {
         private int lineId = 0;
         private int orderId = 0;
-        private int productId = 0;
+        private Product product;
         private int qty = 0;
-        private double totalPrice = 0.0;
         
         public LineItemBuilder lineId(int lineId) {
             this.lineId = lineId;
@@ -41,8 +39,8 @@ public class LineItem {
             return this;
         }
         
-        public LineItemBuilder productId(int productId) {
-            this.productId = productId;
+        public LineItemBuilder product(Product product) {
+            this.product = product;
             return this;
         }
         
@@ -51,22 +49,16 @@ public class LineItem {
             return this;
         }
         
-        public LineItemBuilder totalPrice(double totalPrice) {
-            this.totalPrice = totalPrice;
-            return this;
-        }
-        
         public LineItem build() {
-            return new LineItem(lineId, orderId, productId, qty, totalPrice);
+            return new LineItem(lineId, orderId, product, qty);
         }
     }
 
-    public LineItem(int lineId, int orderId, int productId, int qty, double totalPrice) {
+    public LineItem(int lineId, int orderId, Product product, int qty) {
         this.lineId = lineId;
         this.orderId = orderId;
-        this.productId = productId;
+        this.product = product;
         this.qty = qty;
-        this.totalPrice = totalPrice;
     }
 
     public int getLineId() {
@@ -77,8 +69,8 @@ public class LineItem {
         return orderId;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
     public int getQty() {
@@ -86,7 +78,7 @@ public class LineItem {
     }
 
     public double getTotalPrice() {
-        return totalPrice;
+        return qty * product.getPrice();
     }
     
     

@@ -57,7 +57,7 @@
                 <tbody>
                     <%
                         for(LineItem item: items) {
-                            Product product = ProductModel.getInstance().getProductById(item.getProductId());
+                            Product product = ProductModel.getInstance().getProductById(item.getProduct().getProductId());
                     %>
                     <tr>
                         <td><%=item.getQty()%></td>
