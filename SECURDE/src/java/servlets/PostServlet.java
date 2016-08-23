@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import web.Review;
+import web.model.ProductModel;
 import web.model.ReviewModel;
 
 /**
@@ -37,28 +38,32 @@ public class PostServlet extends MySQLDbcpServlet {
         super.doPost(request, response);
         
         if(PostServlet.sameOrigin(request)) {
-//            if(this.validateSessionId(request, request.getSession().getId())) {
+            try {
                 int userId = Integer.parseInt(request.getParameter(Review.USER_ID));
                 int productId = Integer.parseInt(request.getParameter(Review.PRODUCT_ID));
                 String review = request.getParameter(Review.REVIEW);
-
-                try {
-                    Review rev = new Review.ReviewBuilder()
-                            .userId(userId)
-                            .review(review)
-                            .productId(productId)
-                            .build();
-
-                    ReviewModel.getInstance().addReview(rev);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    response.sendError(0);
+                
+                if(ProductModel.getInstance().boughtByUser(productId, userId)) {
+                    try {
+                        Review rev = new Review.ReviewBuilder()
+                                .userId(userId)
+                                .review(review)
+                                .productId(productId)
+                                .build();
+                        
+                        ReviewModel.getInstance().addReview(rev);
+                        
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        response.sendError(0);
+                    }
+                } else {
+                    //do nothing for now...
                 }
+            } catch (SQLException ex) {
+                Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-//        } else {
-//            response.sendRedirect(ACCESS_DENIED_URL);
-//        }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
