@@ -26,17 +26,10 @@
     Account account = null;
     Product product = null;
     boolean bought = false;
-    String sessionID = "";
     String redirect = "";
 
     try {
-        sessionID = request.getParameter("SESSION_ID");
-        
-        if(MySQLDbcpServlet.sameOrigin(request)) {
-            if(!sessionID.equals(request.getSession().getId())) {
-                redirect = MySQLDbcpServlet.ACCESS_DENIED_URL;
-            }
-        } else {
+        if(!MySQLDbcpServlet.sameOrigin(request)) {
             redirect = MySQLDbcpServlet.ACCESS_DENIED_URL;
         }
     } catch(NullPointerException ex) {
@@ -111,7 +104,6 @@
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" action="AddToCartServlet" method="post">
-                            <input type="hidden" name="SESSION_ID" value="<%=sessionID%>"/>
                             <input type="hidden" name="<%=LineItem.PRODUCT_ID%>" value="<%=productID%>"/>
                             <div class="form-group">
                                 <label for="<%=LineItem.QTY%>" class="col-md-3 control-label">

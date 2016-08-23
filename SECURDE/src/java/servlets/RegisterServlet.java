@@ -1,8 +1,10 @@
 package servlets;
 
 
+import com.sun.istack.internal.logging.Logger;
 import java.io.IOException;
 import java.sql.*;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +23,10 @@ public class RegisterServlet extends MySQLDbcpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
+     * @param request
+     * @param response
+     * @throws javax.servlet.ServletException
+     * @throws java.io.IOException
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     @Override
@@ -29,13 +35,17 @@ public class RegisterServlet extends MySQLDbcpServlet {
     }
 
     /**
+     * @param request
+     * @param response
+     * @throws javax.servlet.ServletException
+     * @throws java.io.IOException
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doPost(request, response);
 
-        if(this.sameOrigin(request)) {                
+        if(RegisterServlet.sameOrigin(request)) {                
             String username = request.getParameter("user");
             String firstName = request.getParameter("fName");
             String middleInitial = request.getParameter("mName");
@@ -70,7 +80,7 @@ public class RegisterServlet extends MySQLDbcpServlet {
                     response.sendRedirect("HomePage.jsp");
                 } else response.sendRedirect("register.html");
             } catch(SQLException ex) {
-                    ex.printStackTrace();
+                Logger.getLogger(RegisterServlet.class).log(Level.SEVERE, null, ex);
             } 
         } else {
             response.sendRedirect(ACCESS_DENIED_URL);

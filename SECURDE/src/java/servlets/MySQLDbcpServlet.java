@@ -69,7 +69,7 @@ public class MySQLDbcpServlet extends HttpServlet {
     }
     
     public void newSession(HttpSession session) {
-        this.session = session;
+        MySQLDbcpServlet.session = session;
     }
     
     protected void clearCookies() {
@@ -97,11 +97,7 @@ public class MySQLDbcpServlet extends HttpServlet {
             
             Logger.getLogger(MySQLDbcpServlet.class.getName()).log(Level.INFO, origin);
             
-            if(origin.equals("https://192.168.1.30:8443") || origin.equals("https://localhost:8443")) {
-                return true;
-            } else {
-                return false;
-            }
+            return origin.equals("https://192.168.1.30:8443") || origin.equals("https://localhost:8443");
         } catch (NullPointerException ex) {
             return false;
         }

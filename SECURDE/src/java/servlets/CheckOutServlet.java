@@ -40,9 +40,9 @@ public class CheckOutServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.sameOrigin(request)) {
+        if(CheckOutServlet.sameOrigin(request)) {
             try {
-                if(this.validateSessionId(request, request.getParameter("SESSION_ID"))) {
+//                if(this.validateSessionId(request, request.getParameter("SESSION_ID"))) {
                     Account account = (Account) request.getSession().getAttribute(Account.TABLE_NAME);
                     Cart cart = (Cart) request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
                     List<LineItem> items = cart.getItems();
@@ -51,17 +51,17 @@ public class CheckOutServlet extends MySQLDbcpServlet {
                             .userId(account.getID())
                             .build();
 
-                    for(LineItem item: items) {
+                    items.stream().forEach((item) -> {
                         newOrder.addLineItem(item);
-                    }
+                });
 
                     OrderModel.getInstance().addOrder(newOrder);
 
                     this.addToSession(Cart.ATTRIBUTE_NAME, new Cart());
                     response.sendRedirect("HomePage.jsp");
-                } else {
-                    response.sendRedirect(ACCESS_DENIED_URL);
-                }
+//                } else {
+//                    response.sendRedirect(ACCESS_DENIED_URL);
+//                }
             } catch (SQLException ex) {
                 Logger.getLogger(CheckOutServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import web.Product;
@@ -37,7 +36,7 @@ public class AddProductServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.sameOrigin(request)) {
+        if(AddProductServlet.sameOrigin(request)) {
             String productName = request.getParameter(Product.PRODUCT_NAME);
             String productDescription = request.getParameter(Product.PRODUCT_DESCRIPTION);
             double productPrice = Double.parseDouble(request.getParameter(Product.PRODUCT_PRICE));

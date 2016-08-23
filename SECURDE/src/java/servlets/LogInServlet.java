@@ -37,7 +37,7 @@ public class LogInServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.sameOrigin(request)) {
+        if(LogInServlet.sameOrigin(request)) {
             String user = request.getParameter("user");
             String pwd = request.getParameter("pwd");
 

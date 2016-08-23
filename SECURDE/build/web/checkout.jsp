@@ -19,12 +19,10 @@
 </head>
 
 <%  
-    String sessionID = "";
     Cart cart = new Cart();
     List<LineItem> items = new ArrayList<>();
     
     try {
-        sessionID = request.getSession(false).getId();
 
         if(MySQLDbcpServlet.sameOrigin(request)) {
             try {
@@ -78,7 +76,6 @@
 
         <div class="purchase-container">
             <form action="CheckOutServlet" method="post">
-                <input type="hidden" name="SESSION_ID" value="<%=sessionID%>"/>
                 <div class="form-group">
                     <label class="control-label">Card Holder's Name</label>
                     <input type="text" class="form-control" autocomplete="off" required=""/>

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import web.Cart;
@@ -39,10 +38,10 @@ public class AddToCartServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.sameOrigin(request)) {
+        if(AddToCartServlet.sameOrigin(request)) {
             Cart cart = (Cart)request.getSession().getAttribute(Cart.ATTRIBUTE_NAME);
 
-            String sessionId = request.getParameter("SESSION_ID");
+//            String sessionId = request.getParameter("SESSION_ID");
             int qty = Integer.parseInt(request.getParameter(LineItem.QTY));
             int productId = Integer.parseInt(request.getParameter(LineItem.PRODUCT_ID));
             Product product = null;
@@ -52,7 +51,7 @@ public class AddToCartServlet extends MySQLDbcpServlet {
                 Logger.getLogger(AddToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            if(this.validateSessionId(request, sessionId)) {
+//            if(this.validateSessionId(request, sessionId)) {
                 LineItem item = new LineItem.LineItemBuilder()
                                     .product(product)
                                     .qty(qty)
@@ -61,9 +60,9 @@ public class AddToCartServlet extends MySQLDbcpServlet {
                 cart.addItem(item);
 
                 response.sendRedirect("HomePage.jsp");
-            } else {
-                response.sendRedirect(ACCESS_DENIED_URL);
-            }
+//            } else {
+//                response.sendRedirect(ACCESS_DENIED_URL);
+//            }
         } else {
             response.sendRedirect(ACCESS_DENIED_URL);
         }

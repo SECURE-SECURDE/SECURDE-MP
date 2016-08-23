@@ -36,8 +36,8 @@ public class PostServlet extends MySQLDbcpServlet {
         
         super.doPost(request, response);
         
-        if(this.sameOrigin(request)) {
-            if(this.validateSessionId(request, request.getSession().getId())) {
+        if(PostServlet.sameOrigin(request)) {
+//            if(this.validateSessionId(request, request.getSession().getId())) {
                 int userId = Integer.parseInt(request.getParameter(Review.USER_ID));
                 int productId = Integer.parseInt(request.getParameter(Review.PRODUCT_ID));
                 String review = request.getParameter(Review.REVIEW);
@@ -56,9 +56,9 @@ public class PostServlet extends MySQLDbcpServlet {
                     response.sendError(0);
                 }
             }
-        } else {
-            response.sendRedirect(ACCESS_DENIED_URL);
-        }
+//        } else {
+//            response.sendRedirect(ACCESS_DENIED_URL);
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
