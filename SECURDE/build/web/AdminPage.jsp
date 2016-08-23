@@ -18,7 +18,9 @@
         if(!AccountModel.getInstance().isAdmin(account.getID())) {
             response.sendRedirect(MySQLDbcpServlet.ACCESS_DENIED_URL);
         }
-    } catch (NullPointerException ex) {}
+    } catch (NullPointerException ex) {
+        response.sendRedirect("login.jsp");
+    }
 %>
 
 <html>
