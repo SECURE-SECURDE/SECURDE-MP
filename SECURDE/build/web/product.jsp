@@ -110,7 +110,7 @@
                                     Quantity:
                                 </label>
                                 <div class="col-md-9">
-                                    <input id="<%=LineItem.QTY%>" type="number" name="<%=LineItem.QTY%>" min="1" value="1" onchange="updateTotal();"/>
+                                    <input id="<%=LineItem.QTY%>" type="number" name="<%=LineItem.QTY%>" min="1" max="1000" value="1" onchange="updateTotal();"/>
                                 </div> 
                             </div>
                             <div class="form-group">
